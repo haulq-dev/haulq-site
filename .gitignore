@@ -4,3 +4,11 @@ dist/
 .env
 .env.production
 .DS_Store
+
+# Never commit credentials
+*.pem
+*.key
+id_*
+y
+y.pub
+.wrangler/
