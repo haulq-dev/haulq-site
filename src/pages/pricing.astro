@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import WaitlistForm from '../components/WaitlistForm.astro';
+---
+<Base title="Pricing" description="Software pricing, not a percentage of your gross.">
+  <section class="relative overflow-hidden bg-ink text-white">
+    <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-4xl px-5 py-20">
+      <h1 class="text-4xl font-semibold sm:text-5xl">Pricing</h1>
+      <p class="mt-5 max-w-2xl text-lg text-slate-300">
+        Not finalised, and we would rather say that than invent a number. Two things are decided.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-5 py-16">
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div class="rounded-2xl border border-line p-7">
+        <h2 class="display text-xl font-semibold">HaulQ Carrier</h2>
+        <p class="mt-1 text-sm font-medium text-brand-600">One truck, or a very small operation</p>
+        <p class="mt-4 text-slate">Driver-first, self-dispatch, one authority, simple permissions. Flat monthly.</p>
+      </div>
+      <div class="relative rounded-2xl border-2 border-brand bg-brand-50 p-7">
+        <span class="absolute -top-3 left-7 rounded-full bg-brand px-3 py-1 text-xs font-semibold text-white">Grows with you</span>
+        <h2 class="display text-xl font-semibold">HaulQ Fleet</h2>
+        <p class="mt-1 text-sm font-medium text-brand-600">Multi-truck</p>
+        <p class="mt-4 text-slate">Dispatch board, roles, bulk planning, driver settlements, consolidated reporting. Priced per truck.</p>
+      </div>
+    </div>
+
+    <div class="mt-10 space-y-5 rounded-2xl bg-ink p-8 text-white">
+      <p class="text-slate-300"><strong class="font-semibold text-white">No percentage of gross.</strong> A dispatcher taking 7 percent from a truck grossing $200,000 costs about <span class="font-semibold text-brand">$14,000 a year</span>. Software should not be priced that way.</p>
+      <p class="text-slate-300"><strong class="font-semibold text-white">Buy the modules you want.</strong> Docs on its own, or the whole loop. Adding one later never means setting anything up again.</p>
+      <p class="text-slate-300"><strong class="font-semibold text-white">The MC lookup stays free.</strong> No account, no card, no trial clock.</p>
+    </div>
+
+    <div class="mt-14 rounded-2xl border border-line bg-wash p-6 sm:p-8">
+      <h2 class="text-2xl font-semibold">Get pricing when it lands</h2>
+      <div class="mt-6"><WaitlistForm compact /></div>
+    </div>
+  </section>
+</Base>

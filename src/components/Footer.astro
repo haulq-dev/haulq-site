@@ -1,0 +1,42 @@
+---
+import Logo from './Logo.astro';
+import { PRODUCTS, SITE } from '../consts';
+const year = new Date().getFullYear();
+---
+<footer class="on-dark relative overflow-hidden bg-ink-900 text-white">
+  <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
+  <div class="relative mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:grid-cols-2 md:grid-cols-4">
+    <div class="sm:col-span-2 md:col-span-1">
+      <Logo tone="light" />
+      <p class="mt-4 display text-lg text-white">{SITE.promise}</p>
+      <p class="mt-2 text-sm text-mute">{SITE.wedge}</p>
+    </div>
+    <div>
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-brand">Products</h2>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        {PRODUCTS.map((p) => (
+          <li><a class="text-slate-300 hover:text-brand" href={`/products/${p.slug}`}>{p.name}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-brand">Free tools</h2>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        <li><a class="text-slate-300 hover:text-brand" href="/tools/mc-lookup">MC / DOT lookup</a></li>
+        <li><a class="text-slate-300 hover:text-brand" href="/tools/profit-calculator">Load profit calculator</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-brand">Company</h2>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        <li><a class="text-slate-300 hover:text-brand" href="/pricing">Pricing</a></li>
+        <li><a class="text-slate-300 hover:text-brand" href="/waitlist">Join the waitlist</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="relative border-t border-white/10 px-5 py-6">
+    <p class="mx-auto max-w-6xl text-xs text-mute">
+      &copy; {year} {SITE.name}. Verification results are risk assessments built from public filings, not guarantees.
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,117 @@
+---
+import { PRODUCTS } from '../consts';
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+---
+<form id="waitlist-form" class="space-y-5" novalidate>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <label class="block">
+      <span class="text-sm font-medium">Email</span>
+      <input required type="email" name="email" autocomplete="email"
+        class="mt-1 w-full rounded-lg border border-line px-3 py-2.5 text-sm focus:border-brand focus:ring-0" />
+    </label>
+    <label class="block">
+      <span class="text-sm font-medium">MC or DOT number</span>
+      <input name="mcNumber" inputmode="numeric" placeholder="MC123456 or 1234567"
+        class="mt-1 w-full rounded-lg border border-line px-3 py-2.5 text-sm focus:border-brand focus:ring-0" />
+      <span class="mt-1 block text-xs text-mute">Optional, but it moves you up the list.</span>
+    </label>
+  </div>
+
+  {!compact && (
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="block">
+        <span class="text-sm font-medium">I run</span>
+        <select name="fleetSize" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm focus:border-brand">
+          <option value="">Select</option>
+          <option>1 truck</option>
+          <option>2 to 5 trucks</option>
+          <option>6 to 15 trucks</option>
+          <option>16 or more</option>
+          <option>I dispatch for carriers</option>
+          <option>I am a broker</option>
+        </select>
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium">Equipment</span>
+        <select name="equipment" class="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm focus:border-brand">
+          <option value="">Select</option>
+          <option>Box truck / straight truck</option>
+          <option>Cargo or sprinter van</option>
+          <option>Dry van</option>
+          <option>Reefer</option>
+          <option>Flatbed</option>
+          <option>Mixed</option>
+        </select>
+      </label>
+    </div>
+  )}
+
+  <fieldset>
+    <legend class="text-sm font-medium">Which of these would you use?</legend>
+    <p class="text-xs text-mute">Pick as many as apply. This decides what we build first.</p>
+    <div class="mt-3 flex flex-wrap gap-2">
+      {PRODUCTS.map((p) => (
+        <label class="cursor-pointer">
+          <input type="checkbox" name="interest" value={p.slug} class="peer sr-only" />
+          <span class="inline-flex rounded-full border border-line px-3 py-1.5 text-sm text-slate peer-checked:border-brand peer-checked:bg-brand peer-checked:text-white">
+            {p.short}
+          </span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+
+  <!-- honeypot -->
+  <input type="text" name="company_website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+  <button type="submit"
+    class="w-full rounded-full bg-brand px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition hover:bg-brand-600 disabled:opacity-60 sm:w-auto">
+    Join the waitlist
+  </button>
+
+  <p id="waitlist-msg" class="hidden text-sm" role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  const form = document.getElementById('waitlist-form') as HTMLFormElement | null;
+  const msg = document.getElementById('waitlist-msg') as HTMLElement | null;
+  if (form && msg) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+      const data = new FormData(form);
+      const payload = {
+        email: String(data.get('email') || '').trim(),
+        mcNumber: String(data.get('mcNumber') || '').trim(),
+        fleetSize: String(data.get('fleetSize') || ''),
+        equipment: String(data.get('equipment') || ''),
+        interest: data.getAll('interest').map(String),
+        company_website: String(data.get('company_website') || ''),
+      };
+      msg.className = 'text-sm text-slate';
+      if (!payload.email || !payload.email.includes('@')) {
+        msg.textContent = 'Please enter a valid email address.';
+        msg.className = 'text-sm text-brand-600';
+        return;
+      }
+      btn.disabled = true;
+      msg.textContent = 'Sending...';
+      try {
+        const res = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        msg.textContent = "You're on the list. We'll be in touch before launch.";
+      } catch {
+        msg.textContent = 'Something went wrong. Email hello@haulq.ai and we will add you manually.';
+        msg.className = 'text-sm text-brand-600';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+</script>

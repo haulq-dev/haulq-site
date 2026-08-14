@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import WaitlistForm from '../components/WaitlistForm.astro';
+---
+<Base title="Join the waitlist" description="Early access to HaulQ. Tell us which products you would use.">
+  <section class="relative overflow-hidden bg-ink text-white">
+    <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
+    <div class="absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-brand/20 blur-3xl" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-3xl px-5 py-20">
+      <h1 class="text-4xl font-semibold sm:text-5xl">Join the waitlist</h1>
+      <p class="mt-5 text-lg text-slate-300">
+        We are building box-truck first and shipping documents-to-cash before anything else. Tell us what
+        you need and it changes what we build next.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-5 py-16">
+    <div class="rounded-2xl border border-line bg-white p-6 shadow-lg shadow-ink/5 sm:p-8">
+      <WaitlistForm />
+    </div>
+    <p class="mt-6 text-sm text-mute">We will only email you about HaulQ. No lists, no resale.</p>
+  </section>
+</Base>

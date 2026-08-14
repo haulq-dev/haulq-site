@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+import Badge from '../../components/Badge.astro';
+import WaitlistForm from '../../components/WaitlistForm.astro';
+import { PRODUCTS, productBySlug } from '../../consts';
+
+export function getStaticPaths() {
+  return PRODUCTS.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const product = productBySlug(slug!);
+const related = product.worksWith.map(productBySlug);
+---
+<Base title={product.name} description={product.job}>
+  <!-- Product hero, dark -->
+  <section class="relative overflow-hidden bg-ink text-white">
+    <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
+    <div class="absolute -right-20 top-0 h-72 w-72 rounded-full bg-brand/20 blur-3xl" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-4xl px-5 py-16">
+      <div class="flex items-center gap-3 text-sm">
+        <a href="/products" class="text-mute hover:text-brand">Products</a>
+        <span class="text-white/30">/</span>
+        <Badge status={product.status} />
+      </div>
+      <h1 class="mt-6 text-4xl font-semibold sm:text-5xl">{product.name}</h1>
+      <p class="mt-4 text-xl text-brand">{product.tagline}</p>
+      <p class="mt-5 max-w-2xl text-slate-300">{product.job}</p>
+    </div>
+  </section>
+
+  <article class="mx-auto max-w-4xl px-5 py-16">
+    <div class="rounded-2xl border border-line bg-wash p-6">
+      <span class="text-xs font-semibold uppercase tracking-widest text-brand">Who it is for</span>
+      <p class="mt-2 text-slate">{product.buyer}</p>
+    </div>
+
+    <h2 class="mt-14 text-2xl font-semibold sm:text-3xl">What it does</h2>
+    <ul class="mt-6 space-y-3.5">
+      {product.offer.map((item) => (
+        <li class="flex gap-3.5 text-slate">
+          <span aria-hidden="true" class="mt-2 h-2 w-2 shrink-0 rounded-full bg-brand"></span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-14 rounded-2xl border border-brand-100 bg-brand-50 p-7">
+      <h2 class="display text-lg font-semibold">On its own</h2>
+      <p class="mt-2 text-slate">{product.standalone}</p>
+    </div>
+
+    <h2 class="mt-14 text-2xl font-semibold sm:text-3xl">Stronger with</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-3">
+      {related.map((r) => (
+        <a href={`/products/${r.slug}`} class="group rounded-2xl border border-line p-5 transition hover:border-brand hover:bg-brand-50">
+          <span class="display block font-semibold">{r.name}</span>
+          <span class="mt-1.5 block text-sm text-mute">{r.tagline}</span>
+        </a>
+      ))}
+    </div>
+  </article>
+
+  <section class="border-t border-line bg-wash">
+    <div class="mx-auto max-w-3xl px-5 py-16">
+      <h2 class="text-2xl font-semibold sm:text-3xl">Want this one?</h2>
+      <p class="mt-2 text-slate">Say so and it moves up the build order.</p>
+      <div class="mt-7 rounded-2xl border border-line bg-white p-6 sm:p-8"><WaitlistForm compact /></div>
+    </div>
+  </section>
+</Base>

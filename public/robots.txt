@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://haulq.ai/sitemap-index.xml

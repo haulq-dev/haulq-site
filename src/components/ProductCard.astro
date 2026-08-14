@@ -1,0 +1,17 @@
+---
+import Badge from './Badge.astro';
+import type { Product } from '../consts';
+interface Props { product: Product; }
+const { product } = Astro.props;
+---
+<a href={`/products/${product.slug}`}
+   class="group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-white p-6 transition hover:-translate-y-0.5 hover:border-brand hover:shadow-lg hover:shadow-ink/5">
+  <span class="absolute inset-x-0 top-0 h-1 scale-x-0 bg-brand transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true"></span>
+  <div class="flex items-start justify-between gap-3">
+    <h3 class="display text-lg font-semibold">{product.name}</h3>
+    <Badge status={product.status} />
+  </div>
+  <p class="mt-2 font-medium text-brand-600">{product.tagline}</p>
+  <p class="mt-3 text-sm text-slate">{product.job}</p>
+  <span class="mt-5 text-sm font-semibold text-ink group-hover:text-brand">Read more &rarr;</span>
+</a>

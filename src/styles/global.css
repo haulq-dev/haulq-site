@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/dm-sans";
+
+@theme {
+  /* Brand kit, lifted from the Wix site brand panel */
+  --color-brand: #FF6800;
+  --color-brand-600: #E65E00;
+  --color-brand-100: #FFE2CC;
+  --color-brand-50: #FFF4EC;
+
+  --color-ink: #1E293B;      /* logo navy */
+  --color-ink-900: #16202E;  /* deeper, for footer */
+  --color-slate: #334155;
+  --color-mute: #94A3B8;
+
+  --color-wash: #F8FAFC;
+  --color-line: #E2E8F0;
+
+  --font-display: "Fraunces Variable", Georgia, serif;
+  --font-sans: "DM Sans Variable", system-ui, -apple-system, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 0, "WONK" 0, "opsz" 40;
+  letter-spacing: -0.02em;
+}
+
+::selection { background: var(--color-brand); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Diagonal stripe field, echoing the logo's rising tick.
+   Sits behind dark sections at low opacity. */
+.hq-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 104, 0, 0.07) 0px,
+    rgba(255, 104, 0, 0.07) 2px,
+    transparent 2px,
+    transparent 16px
+  );
+}
+
+/* Orange rule that slants like the mark */
+.hq-slash {
+  background: linear-gradient(105deg, var(--color-brand) 0%, var(--color-brand-600) 100%);
+}
+
+/* Dark sections: keep links legible */
+.on-dark a:hover { color: var(--color-brand); }

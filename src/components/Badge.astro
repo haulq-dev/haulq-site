@@ -1,0 +1,12 @@
+---
+interface Props { status: string; }
+const { status } = Astro.props;
+const tone: Record<string, string> = {
+  'Building now': 'bg-brand text-white',
+  'Next up': 'bg-ink text-white',
+  'Planned': 'bg-white text-slate ring-1 ring-line',
+};
+---
+<span class:list={["inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold", tone[status] ?? tone['Planned']]}>
+  {status}
+</span>

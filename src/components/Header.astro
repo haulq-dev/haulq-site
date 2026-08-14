@@ -1,0 +1,35 @@
+---
+import Logo from './Logo.astro';
+import { PRODUCTS } from '../consts';
+const path = Astro.url.pathname;
+const on = (p: string) => path.startsWith(p) ? 'text-ink' : 'text-slate';
+---
+<header class="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur">
+  <div class="hq-slash h-1 w-full"></div>
+  <nav class="mx-auto flex max-w-6xl items-center gap-6 px-5 py-3.5">
+    <a href="/" aria-label="HaulQ home"><Logo /></a>
+
+    <div class="relative hidden md:block group">
+      <button class:list={["py-2 text-sm hover:text-ink", on('/products')]}>Products</button>
+      <div class="invisible absolute left-0 top-full w-80 rounded-2xl border border-line bg-white p-2 opacity-0 shadow-xl transition group-hover:visible group-hover:opacity-100">
+        {PRODUCTS.map((p) => (
+          <a href={`/products/${p.slug}`} class="flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-brand-50">
+            <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand"></span>
+            <span>
+              <span class="block text-sm font-semibold text-ink">{p.name}</span>
+              <span class="block text-xs text-mute">{p.tagline}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <a href="/tools/mc-lookup" class:list={["hidden md:block text-sm hover:text-ink", on('/tools')]}>Free tools</a>
+    <a href="/pricing" class:list={["hidden md:block text-sm hover:text-ink", on('/pricing')]}>Pricing</a>
+
+    <a href="/waitlist"
+       class="ml-auto rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand/30 transition hover:bg-brand-600">
+      Join the waitlist
+    </a>
+  </nav>
+</header>

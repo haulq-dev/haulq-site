@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { PRODUCTS } from '../../consts';
+---
+<Base title="Products" description="Seven products on one shared record. Start with one, add the rest without re-entering anything.">
+  <section class="relative overflow-hidden bg-ink text-white">
+    <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-5 py-20">
+      <h1 class="text-4xl font-semibold sm:text-5xl">Products</h1>
+      <p class="mt-5 max-w-2xl text-lg text-slate-300">
+        Every product reads the same carrier, driver, truck, load, broker and document records. Buy one or
+        buy all of them. Nothing gets typed twice.
+      </p>
+    </div>
+  </section>
+  <section class="mx-auto max-w-6xl px-5 py-16">
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {PRODUCTS.map((product) => <ProductCard product={product} />)}
+    </div>
+  </section>
+</Base>
