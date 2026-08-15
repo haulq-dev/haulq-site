@@ -149,37 +149,107 @@ async function handleWaitlist(request: Request, env: Env): Promise<Response> {
     } catch { /* non-fatal */ }
   }
 
-  if (env.POSTMARK_TOKEN && env.NOTIFY_EMAIL && env.FROM_EMAIL) {
-    const lines = [
-      `Email: ${record.email}`,
-      `MC/DOT: ${record.mcNumber ?? '-'}`,
-      `Fleet: ${record.fleetSize ?? '-'}`,
-      `Equipment: ${record.equipment ?? '-'}`,
-      `Interested in: ${record.interest.length ? record.interest.join(', ') : '-'}`,
-      `Country: ${record.country ?? '-'}`,
-      `Received: ${record.receivedAt}`,
-    ].join('\n');
-    try {
-      await fetch('https://api.postmarkapp.com/email', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          accept: 'application/json',
-          'X-Postmark-Server-Token': env.POSTMARK_TOKEN,
-        },
-        body: JSON.stringify({
-          From: env.FROM_EMAIL,
-          To: env.NOTIFY_EMAIL,
-          ReplyTo: record.email,
-          Subject: `HaulQ waitlist: ${record.email}`,
-          TextBody: lines,
-          MessageStream: 'outbound',
-        }),
-      });
-    } catch { /* non-fatal */ }
+  if (env.POSTMARK_TOKEN && env.FROM_EMAIL) {
+    // Both sends are best-effort and run in parallel. A mail failure must
+    // never surface to the person, because the signup is already stored.
+    const sends: Promise<unknown>[] = [];
+
+    if (env.NOTIFY_EMAIL) {
+      sends.push(sendMail(env, {
+        To: env.NOTIFY_EMAIL,
+        ReplyTo: record.email,
+        Subject: `HaulQ waitlist: ${record.email}`,
+        TextBody: [
+          `Email: ${record.email}`,
+          `MC/DOT: ${record.mcNumber ?? '-'}`,
+          `Fleet: ${record.fleetSize ?? '-'}`,
+          `Equipment: ${record.equipment ?? '-'}`,
+          `Interested in: ${record.interest.length ? record.interest.join(', ') : '-'}`,
+          `Country: ${record.country ?? '-'}`,
+          `Received: ${record.receivedAt}`,
+        ].join('\n'),
+      }));
+    }
+
+    sends.push(sendMail(env, {
+      To: record.email,
+      Subject: 'You are on the HaulQ waitlist',
+      TextBody: confirmationBody(record),
+    }));
+
+    await Promise.allSettled(sends);
   }
 
   return json({ ok: true });
+}
+
+const PRODUCT_LABELS: Record<string, string> = {
+  docs: 'HaulQ Docs',
+  pay: 'HaulQ Pay',
+  insights: 'HaulQ Insights',
+  verify: 'HaulQ Verify',
+  track: 'HaulQ Track',
+  routes: 'HaulQ Routes',
+  dispatch: 'HaulQ Dispatch',
+};
+
+function confirmationBody(record: { interest: string[] }): string {
+  const picked = record.interest
+    .map((slug) => PRODUCT_LABELS[slug])
+    .filter(Boolean);
+
+  const lines = [
+    'Thanks for signing up.',
+    '',
+    'You are on the HaulQ waitlist. We will email you as each product goes live,',
+    'starting with HaulQ Docs and HaulQ Pay.',
+  ];
+
+  if (picked.length) {
+    lines.push(
+      '',
+      'You told us you are interested in:',
+      ...picked.map((name) => `  - ${name}`),
+    );
+  }
+
+  lines.push(
+    '',
+    'In the meantime, the load profit calculator is free to use, no account needed:',
+    'https://haulq.ai/tools/profit-calculator',
+    '',
+    'Reply to this email if you want to talk to us directly.',
+    '',
+    'HaulQ',
+    'Run every load. Know every dollar.',
+  );
+
+  return lines.join('\n');
+}
+
+async function sendMail(
+  env: Env,
+  msg: { To: string; Subject: string; TextBody: string; ReplyTo?: string },
+): Promise<void> {
+  try {
+    const res = await fetch('https://api.postmarkapp.com/email', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+        'X-Postmark-Server-Token': env.POSTMARK_TOKEN!,
+      },
+      body: JSON.stringify({
+        From: env.FROM_EMAIL,
+        ReplyTo: env.NOTIFY_EMAIL ?? env.FROM_EMAIL,
+        MessageStream: 'outbound',
+        ...msg,
+      }),
+    });
+    if (!res.ok) console.error('postmark', res.status, await res.text());
+  } catch (e) {
+    console.error('postmark send failed', e);
+  }
 }
 
 /* -------------------------------------------------------------------- root */
