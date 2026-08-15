@@ -3,7 +3,7 @@ export const SITE = {
   domain: 'haulq.ai',
   promise: 'Run every load. Know every dollar.',
   category: 'The modular operating system for owner-operators and small fleets.',
-  wedge: 'Built box-truck first.',
+  wedge: 'For owner-operators and small fleets.',
 };
 
 export type Status = 'Building now' | 'Next up' | 'Planned';

@@ -1,20 +1,44 @@
 ---
+/**
+ * HaulQ wordmark.
+ *
+ * Drawn as inline SVG so it can recolour for dark surfaces. "Haul" is live
+ * text in DM Sans (already loaded by the site); the Q is a ring plus the
+ * orange gradient tail, which is how the logo is constructed.
+ *
+ * If you have the official vector, drop it at public/logo.svg and swap the
+ * <svg> below for <img src="/logo.svg" alt="HaulQ" />. This is the only
+ * place the logo is referenced.
+ */
 interface Props { class?: string; tone?: 'dark' | 'light'; }
 const { class: cls = '', tone = 'dark' } = Astro.props;
-const word = tone === 'light' ? 'text-white' : 'text-ink';
+const word = tone === 'light' ? '#FFFFFF' : '#123A63';
+const uid = `tail-${tone}`;
 ---
-<span class:list={["inline-flex items-center gap-2.5", cls]}>
-  <svg viewBox="0 0 100 100" class="h-7 w-7 shrink-0" aria-hidden="true">
-    <defs>
-      <linearGradient id={`hq-${tone}`} x1="0" y1="0" x2="1" y2="1">
-        <stop offset="50%" stop-color="#FF6800" />
-        <stop offset="50%" stop-color={tone === 'light' ? '#94A3B8' : '#1E293B'} />
-      </linearGradient>
-    </defs>
-    <g fill="none" stroke={`url(#hq-${tone})`} stroke-width="21" stroke-linejoin="miter" stroke-miterlimit="10">
-      <path d="M9 47 L34 74 L79 26" />
-    </g>
-    <path d="M92 12 L94 44 L60 14 Z" fill={`url(#hq-${tone})`} />
-  </svg>
-  <span class:list={["text-xl font-bold tracking-tight", word]}>HaulQ</span>
-</span>
+<svg
+  viewBox="0 0 300 112"
+  class:list={["h-8 w-auto", cls]}
+  role="img"
+  aria-label="HaulQ"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient id={uid} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D8410F" />
+      <stop offset="100%" stop-color="#FF8412" />
+    </linearGradient>
+  </defs>
+
+  <text
+    x="0"
+    y="78"
+    fill={word}
+    font-family='"DM Sans Variable", "DM Sans", system-ui, sans-serif'
+    font-weight="700"
+    font-size="94"
+    letter-spacing="-3"
+  >Haul</text>
+
+  <circle cx="243" cy="47" r="33" fill="none" stroke={word} stroke-width="17" />
+  <path d="M248 52 L296 100" stroke={`url(#${uid})`} stroke-width="17" stroke-linecap="butt" />
+</svg>

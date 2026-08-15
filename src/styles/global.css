@@ -9,8 +9,10 @@
   --color-brand-100: #FFE2CC;
   --color-brand-50: #FFF4EC;
 
-  --color-ink: #1E293B;      /* logo navy */
-  --color-ink-900: #16202E;  /* deeper, for footer */
+  --color-ink: #123A63;      /* logo navy */
+  --color-ink-900: #0C2B4A;  /* deeper, for footer */
+  --color-tail-from: #D8410F; /* Q tail gradient, dark end */
+  --color-tail-to: #FF8412;   /* Q tail gradient, light end */
   --color-slate: #334155;
   --color-mute: #94A3B8;
 
@@ -56,9 +58,9 @@ h1, h2, h3, .display {
   );
 }
 
-/* Orange rule that slants like the mark */
+/* Orange rule matching the Q tail gradient */
 .hq-slash {
-  background: linear-gradient(105deg, var(--color-brand) 0%, var(--color-brand-600) 100%);
+  background: linear-gradient(105deg, var(--color-tail-from) 0%, var(--color-tail-to) 100%);
 }
 
 /* Dark sections: keep links legible */
