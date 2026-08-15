@@ -1,0 +1,21 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "haulq-site",
+	"main": "src/worker.ts",
+	"compatibility_date": "2026-08-14",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS",
+		"not_found_handling": "404-page"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"kv_namespaces": [
+		{
+			"binding": "WAITLIST",
+			"id": "1439db12aa9d493b98eebe0741f5f40d",
+			"remote": true
+		}
+	]
+}

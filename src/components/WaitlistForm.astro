@@ -107,7 +107,7 @@ const { compact = false } = Astro.props;
         form.reset();
         msg.textContent = "You're on the list. We'll be in touch before launch.";
       } catch {
-        msg.textContent = 'Something went wrong. Email hello@haulq.ai and we will add you manually.';
+        msg.textContent = 'That did not go through. Please try again in a moment.';
         msg.className = 'text-sm text-brand-600';
       } finally {
         btn.disabled = false;
