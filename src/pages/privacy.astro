@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, WAITLIST_CONSENT_VERSION } from '../consts';
+const updated = 'August 2026';
+---
+<Base title="Privacy" description="What HaulQ collects, why, and how to have it removed.">
+  <section class="relative overflow-hidden bg-ink text-white">
+    <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-3xl px-5 py-20">
+      <h1 class="text-4xl font-semibold sm:text-5xl">Privacy</h1>
+      <p class="mt-5 text-lg text-slate-300">
+        Short version: the only thing this site collects is what you type into the waitlist form,
+        and we use it to email you about HaulQ. Nothing is sold, rented or shared with advertisers.
+      </p>
+      <p class="mt-3 text-sm text-mute">Last updated {updated}</p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl space-y-10 px-5 py-16">
+    <div>
+      <h2 class="text-2xl font-semibold">What we collect</h2>
+      <p class="mt-3 text-slate">
+        When you join the waitlist we store the email address you give us, and the optional details you
+        choose to add: an MC or DOT number, your fleet size, your equipment type, and which products you
+        said you were interested in. Alongside that we record the date and time you signed up, the page you
+        signed up from, the country your request came from, and a version tag for the consent wording that
+        was on screen at the time (currently <code class="rounded bg-wash px-1.5 py-0.5 text-sm">{WAITLIST_CONSENT_VERSION}</code>).
+        That last part exists so we can always tell you exactly what you agreed to.
+      </p>
+      <p class="mt-3 text-slate">
+        The MC and DOT lookup runs against public FMCSA records. We do not require an account and we do not
+        attach lookups to you. The load profit calculator runs entirely in your browser; those numbers are
+        never sent anywhere.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">What we do with it</h2>
+      <p class="mt-3 text-slate">
+        We email you about {SITE.name}: a confirmation when you sign up, then a message as each product goes
+        live. That is the whole purpose. If we ever want to send you something outside that scope, we will ask
+        first rather than assume the waitlist covers it.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">Who else sees it</h2>
+      <p class="mt-3 text-slate">
+        Two service providers, both acting on our behalf and neither permitted to use your data for their own
+        purposes. <strong class="font-semibold text-ink">Cloudflare</strong> hosts this site and stores the
+        waitlist, and keeps standard request logs. <strong class="font-semibold text-ink">Postmark</strong>
+        delivers our email. We do not run advertising trackers, analytics scripts or third-party cookies on
+        this site.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">How long we keep it</h2>
+      <p class="mt-3 text-slate">
+        Waitlist entries are kept until you ask us to remove them, or until we retire the waitlist, whichever
+        comes first. If you unsubscribe we keep a record of the unsubscribe itself, because that is what stops
+        us from emailing you again by mistake.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">Getting out</h2>
+      <p class="mt-3 text-slate">
+        Every marketing email we send has an unsubscribe link. You can also email
+        <a class="font-medium text-brand underline underline-offset-2" href="mailto:privacy@haulq.ai">privacy@haulq.ai</a>
+        and ask us to remove your entry, or to send you a copy of what we hold. We will do it, and we will not
+        make you explain why.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">Changes</h2>
+      <p class="mt-3 text-slate">
+        If this policy changes in a way that affects what we do with your information, we will update the date
+        at the top and, for anything material, tell the people already on the list.
+      </p>
+    </div>
+  </section>
+</Base>

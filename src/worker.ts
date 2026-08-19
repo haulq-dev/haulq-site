@@ -100,6 +100,8 @@ interface Signup {
   fleetSize?: string;
   equipment?: string;
   interest?: string[];
+  sourcePath?: string;
+  consentVersion?: string;
   company_website?: string;
 }
 
@@ -126,6 +128,12 @@ async function handleWaitlist(request: Request, env: Env): Promise<Response> {
     interest: Array.isArray(body.interest) ? body.interest.slice(0, 10) : [],
     receivedAt: new Date().toISOString(),
     country: request.headers.get('cf-ipcountry') ?? null,
+    // Consent provenance. sourcePath is the page the form was submitted from,
+    // consentVersion is the tag on the wording that was shown underneath it
+    // (see WAITLIST_CONSENT_VERSION in src/consts.ts). Together these answer
+    // "what did this person agree to, and where" without git archaeology.
+    sourcePath: (body.sourcePath ?? '').trim().slice(0, 200) || null,
+    consentVersion: (body.consentVersion ?? '').trim().slice(0, 60) || null,
   };
 
   // Persist first. Everything below is best-effort and must not lose a signup.
@@ -166,6 +174,8 @@ async function handleWaitlist(request: Request, env: Env): Promise<Response> {
           `Equipment: ${record.equipment ?? '-'}`,
           `Interested in: ${record.interest.length ? record.interest.join(', ') : '-'}`,
           `Country: ${record.country ?? '-'}`,
+          `Signed up on: ${record.sourcePath ?? '-'}`,
+          `Consent: ${record.consentVersion ?? '-'}`,
           `Received: ${record.receivedAt}`,
         ].join('\n'),
       }));

@@ -6,6 +6,13 @@ export const SITE = {
   wedge: 'For owner-operators and small fleets.',
 };
 
+/**
+ * Version tag for the consent sentence shown under the waitlist form.
+ * Bump this whenever the wording of that sentence changes, so a stored
+ * signup can always be traced back to what the person actually agreed to.
+ */
+export const WAITLIST_CONSENT_VERSION = 'waitlist-2026-08';
+
 export type Status = 'Building now' | 'Next up' | 'Planned';
 
 export interface Product {

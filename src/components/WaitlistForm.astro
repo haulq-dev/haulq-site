@@ -1,9 +1,9 @@
 ---
-import { PRODUCTS } from '../consts';
+import { PRODUCTS, WAITLIST_CONSENT_VERSION } from '../consts';
 interface Props { compact?: boolean; }
 const { compact = false } = Astro.props;
 ---
-<form id="waitlist-form" class="space-y-5" novalidate>
+<form id="waitlist-form" class="space-y-5" novalidate data-consent-version={WAITLIST_CONSENT_VERSION}>
   <div class="grid gap-4 sm:grid-cols-2">
     <label class="block">
       <span class="text-sm font-medium">Email</span>
@@ -70,6 +70,12 @@ const { compact = false } = Astro.props;
     Join the waitlist
   </button>
 
+  <p class="text-xs leading-relaxed text-mute">
+    By joining you agree we can email you about HaulQ launches and product updates.
+    Unsubscribe from any of it at any time. We never sell or share your address. See our
+    <a class="underline underline-offset-2 hover:text-brand" href="/privacy">privacy policy</a>.
+  </p>
+
   <p id="waitlist-msg" class="hidden text-sm" role="status" aria-live="polite"></p>
 </form>
 
@@ -87,6 +93,10 @@ const { compact = false } = Astro.props;
         fleetSize: String(data.get('fleetSize') || ''),
         equipment: String(data.get('equipment') || ''),
         interest: data.getAll('interest').map(String),
+        // Recorded so a signup can be traced back to the page it came from
+        // and to the exact consent wording that was on screen at the time.
+        sourcePath: location.pathname,
+        consentVersion: form.dataset.consentVersion || '',
         company_website: String(data.get('company_website') || ''),
       };
       msg.className = 'text-sm text-slate';
