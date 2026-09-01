@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import WaitlistForm from '../components/WaitlistForm.astro';
+---
+<Base title="Our Story" description="Why HaulQ exists, and why we build it fast.">
+  <!-- HERO, dark -->
+  <section class="relative overflow-hidden bg-ink text-white">
+    <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-5 pb-20 pt-20 sm:pt-28">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand">Our story</p>
+      <h1 class="mt-5 max-w-3xl text-5xl font-semibold leading-[1.03] sm:text-6xl">
+        Work on the business.<br /><span class="text-brand">Not in it.</span>
+      </h1>
+      <p class="mt-7 max-w-2xl text-lg text-slate-300">
+        Every hour a small carrier spends scrolling a load board, retyping a rate confirmation, or
+        chasing a broker for a check is an hour they aren't running their business. HaulQ exists to
+        hand that hour back.
+      </p>
+    </div>
+  </section>
+
+  <!-- THE PROBLEM, white -->
+  <section class="mx-auto max-w-4xl px-5 py-20">
+    <h2 class="text-3xl font-semibold sm:text-4xl">The job ate the business</h2>
+    <p class="mt-5 text-lg text-slate">
+      An owner-operator or a two-truck fleet doesn't have a back office. The person who negotiates
+      the rate is the same person who drives the load, uploads the paperwork, and calls the broker
+      to ask where the check is. None of that work grows the business. All of it has to happen
+      anyway, today, before the truck moves again.
+    </p>
+    <p class="mt-5 text-lg text-slate">
+      HaulQ is built to take that busywork off one person's plate — not to replace their judgment
+      about which load to run or which broker to trust.
+    </p>
+  </section>
+
+  <!-- SPEED, warm tint -->
+  <section class="border-y border-brand-100 bg-brand-50">
+    <div class="mx-auto max-w-6xl px-5 py-20">
+      <h2 class="text-3xl font-semibold sm:text-4xl">Speed is the whole point</h2>
+      <p class="mt-3 max-w-2xl text-slate">A small carrier can't wait for a slow quarter. Neither can we.</p>
+      <ol class="mt-12 grid gap-5 sm:grid-cols-3">
+        {[
+          ['Ship in weeks, not quarters', 'Every product on this site went from a plan to something a real carrier could use inside the same stretch it was scoped. That pace doesn’t slow down once the interesting part is done.'],
+          ['One record, not seven tools stapled together', 'Docs, Pay, Insights, Verify and the rest of the loop share the same load, the same broker and the same truck. Nothing gets re-entered because a different module needed it.'],
+          ['Say what isn’t built yet', 'If something on this site is Building now or Planned, that’s what it is. We’d rather say a product isn’t ready than demo a mockup and let you find out later.'],
+        ].map(([title, body], i) => (
+          <li class="rounded-2xl border border-line bg-white p-6">
+            <span class="display text-sm font-bold text-brand">0{i + 1}</span>
+            <h3 class="mt-2 display text-xl font-semibold">{title}</h3>
+            <p class="mt-2 text-sm text-slate">{body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- SMALL ON PURPOSE, white -->
+  <section class="mx-auto max-w-4xl px-5 py-20">
+    <h2 class="text-3xl font-semibold sm:text-4xl">Small on purpose</h2>
+    <p class="mt-5 text-lg text-slate">
+      HaulQ is built remote, by a small, distributed team — no headquarters, no floor of account
+      managers. We're not adding headcount to look bigger before the product has earned it. The
+      same discipline we're asking a two-truck carrier to run their business with is the one we run
+      ours with.
+    </p>
+  </section>
+
+  <!-- WHERE WE ARE, dark -->
+  <section class="relative overflow-hidden bg-ink text-white">
+    <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-4xl px-5 py-20">
+      <h2 class="text-3xl font-semibold sm:text-4xl">Where we actually are</h2>
+      <p class="mt-5 text-lg text-slate-300">
+        HaulQ is early. We have a carrier running it today and more waiting on the rest of the loop.
+        That's the honest version — not a demo, not a slide, an actual carrier's actual loads. The
+        products on this site marked Building now or Planned are exactly that: we'd rather ship the
+        loop correctly, one piece at a time, than promise all seven of them at once.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mx-auto max-w-3xl px-5 py-20">
+    <h2 class="text-3xl font-semibold sm:text-4xl">Get early access</h2>
+    <p class="mt-3 text-slate">
+      Tell us what you run and we will let you know as products go live.
+    </p>
+    <div class="mt-8 rounded-2xl border border-line bg-white p-6 shadow-lg shadow-ink/5 sm:p-8">
+      <WaitlistForm />
+    </div>
+  </section>
+</Base>
