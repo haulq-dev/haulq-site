@@ -1,0 +1,7 @@
+# Normalize everything to LF in the repository; check out native on Windows.
+* text=auto eol=lf
+
+# Binary — never touch, never diff as text.
+*.png   binary
+*.ico   binary
+*.pdf   binary
