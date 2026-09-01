@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import ContactForm from './ContactForm.astro';
 import { PRODUCTS, SITE } from '../consts';
 const year = new Date().getFullYear();
 ---
@@ -29,10 +30,22 @@ const year = new Date().getFullYear();
     <div>
       <h2 class="text-xs font-semibold uppercase tracking-widest text-brand">Company</h2>
       <ul class="mt-4 space-y-2.5 text-sm">
+        <li><a class="text-slate-300 hover:text-brand" href="/story">Our story</a></li>
         <li><a class="text-slate-300 hover:text-brand" href="/pricing">Pricing</a></li>
         <li><a class="text-slate-300 hover:text-brand" href="/waitlist">Join the waitlist</a></li>
         <li><a class="text-slate-300 hover:text-brand" href="/privacy">Privacy</a></li>
       </ul>
+    </div>
+  </div>
+  <div class="relative border-t border-white/10 px-5 py-12">
+    <div class="mx-auto grid max-w-6xl gap-8 md:grid-cols-[1fr_1.4fr] md:items-start">
+      <div>
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-brand">Get in touch</h2>
+        <p class="mt-4 max-w-sm text-sm text-slate-300">
+          Question about a product, pricing, or something not working? Send it straight to us.
+        </p>
+      </div>
+      <ContactForm />
     </div>
   </div>
   <div class="relative border-t border-white/10 px-5 py-6">

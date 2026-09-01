@@ -1,0 +1,80 @@
+---
+---
+<form id="contact-form" class="space-y-4" novalidate>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <label class="block">
+      <span class="text-sm font-medium text-white">Name</span>
+      <input type="text" name="name" autocomplete="name"
+        class="mt-1 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white placeholder:text-mute focus:border-brand focus:ring-0" />
+    </label>
+    <label class="block">
+      <span class="text-sm font-medium text-white">Email</span>
+      <input required type="email" name="email" autocomplete="email"
+        class="mt-1 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white placeholder:text-mute focus:border-brand focus:ring-0" />
+    </label>
+  </div>
+
+  <label class="block">
+    <span class="text-sm font-medium text-white">Message</span>
+    <textarea required name="message" rows="3"
+      class="mt-1 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white placeholder:text-mute focus:border-brand focus:ring-0"></textarea>
+  </label>
+
+  <!-- honeypot -->
+  <input type="text" name="company_website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+  <button type="submit"
+    class="rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition hover:bg-brand-600 disabled:opacity-60">
+    Send message
+  </button>
+
+  <p id="contact-msg" class="hidden text-sm" role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const msg = document.getElementById('contact-msg') as HTMLElement | null;
+  if (form && msg) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+      const data = new FormData(form);
+      const payload = {
+        name: String(data.get('name') || '').trim(),
+        email: String(data.get('email') || '').trim(),
+        message: String(data.get('message') || '').trim(),
+        company_website: String(data.get('company_website') || ''),
+      };
+      msg.classList.remove('hidden');
+      msg.className = 'text-sm text-slate-300';
+      if (!payload.email || !payload.email.includes('@')) {
+        msg.textContent = 'Please enter a valid email address.';
+        msg.className = 'text-sm text-brand';
+        return;
+      }
+      if (!payload.message) {
+        msg.textContent = 'Please add a message.';
+        msg.className = 'text-sm text-brand';
+        return;
+      }
+      btn.disabled = true;
+      msg.textContent = 'Sending...';
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        msg.textContent = "Message sent. We'll get back to you soon.";
+        msg.className = 'text-sm text-slate-300';
+      } catch {
+        msg.textContent = 'That did not go through. Please try again in a moment.';
+        msg.className = 'text-sm text-brand';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+</script>

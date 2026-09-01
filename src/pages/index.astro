@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import ProductCard from '../components/ProductCard.astro';
 import WaitlistForm from '../components/WaitlistForm.astro';
+import ComingSoonRoadmap from '../components/ComingSoonRoadmap.astro';
 import { PRODUCTS, SITE, AUTOPILOT } from '../consts';
 ---
 <Base description={SITE.category}>
@@ -118,6 +119,9 @@ import { PRODUCTS, SITE, AUTOPILOT } from '../consts';
       </div>
     </div>
   </section>
+
+  <!-- COMING SOON, dark: Driver App + the rest of the roadmap -->
+  <ComingSoonRoadmap />
 
   <!-- WAITLIST -->
   <section class="mx-auto max-w-3xl px-5 py-20">

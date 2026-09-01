@@ -17,5 +17,11 @@
 			"id": "1439db12aa9d493b98eebe0741f5f40d",
 			"remote": true
 		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "CONTACT",
+			"bucket_name": "haulq-contact"
+		}
 	]
 }

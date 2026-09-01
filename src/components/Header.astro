@@ -21,11 +21,23 @@ const on = (p: string) => path.startsWith(p) ? 'text-ink' : 'text-slate';
             </span>
           </a>
         ))}
+        <div class="my-1 border-t border-line"></div>
+        <a href="/#coming-soon" class="flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-brand-50">
+          <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-slate-300"></span>
+          <span>
+            <span class="flex items-center gap-2">
+              <span class="block text-sm font-semibold text-ink">HaulQ Driver App</span>
+              <span class="rounded-full bg-wash px-2 py-0.5 text-[10px] font-semibold text-slate ring-1 ring-line">Coming soon</span>
+            </span>
+            <span class="block text-xs text-mute">Everything a driver needs, in the cab.</span>
+          </span>
+        </a>
       </div>
     </div>
 
     <a href="/tools/mc-lookup" class:list={["hidden md:block text-sm hover:text-ink", on('/tools')]}>Free tools</a>
     <a href="/pricing" class:list={["hidden md:block text-sm hover:text-ink", on('/pricing')]}>Pricing</a>
+    <a href="/story" class:list={["hidden md:block text-sm hover:text-ink", on('/story')]}>Our story</a>
 
     <a href="/waitlist"
        class="ml-auto rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand/30 transition hover:bg-brand-600">

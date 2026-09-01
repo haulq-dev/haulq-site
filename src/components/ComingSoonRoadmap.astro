@@ -1,0 +1,190 @@
+---
+import { PRODUCTS, WAITLIST_CONSENT_VERSION } from '../consts';
+
+const FEATURES = [
+  "See today's load the moment it's assigned. No more phone tag with dispatch.",
+  'One tap to check in at every stop — pickup, loading, delivery, done.',
+  'Snap the paperwork with your camera. HaulQ Docs reads it before you’re back on the road.',
+  'Live ETA and detention tracking run in the background, automatically.',
+];
+
+// Tuned for legibility on the dark section — Badge.astro's tones assume a
+// white card background, which is where every other use of it lives.
+const DARK_TONE: Record<string, string> = {
+  'Building now': 'bg-brand text-white',
+  'Next up': 'bg-white/15 text-white ring-1 ring-white/30',
+  'Planned': 'bg-white/10 text-slate-300 ring-1 ring-white/15',
+};
+---
+<section id="coming-soon" class="relative overflow-hidden bg-ink-900 text-white">
+  <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-6xl px-5 py-20">
+    <span class="inline-flex items-center rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate ring-1 ring-white/20">
+      Coming soon
+    </span>
+    <h2 class="mt-5 max-w-2xl text-3xl font-semibold sm:text-4xl">Everything still coming to HaulQ</h2>
+    <p class="mt-4 max-w-2xl text-lg text-slate-300">
+      The product ladder above is only part of it. Here's the cab-side app we're building next,
+      and where the rest of the roadmap stands.
+    </p>
+
+    <div class="mt-14 grid items-center gap-14 lg:grid-cols-2">
+      <div>
+        <h3 class="display text-2xl font-semibold">HaulQ Driver App</h3>
+        <p class="mt-3 max-w-md text-slate-300">
+          The cab-side half of HaulQ. Everything a driver needs to run a load, and nothing they
+          have to type twice.
+        </p>
+
+        <ul class="mt-7 space-y-4">
+          {FEATURES.map((f) => (
+            <li class="flex items-start gap-3">
+              <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-brand">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="h-3 w-3"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0l-3.5-3.5a1 1 0 1 1 1.4-1.4l2.8 2.8 6.8-6.8a1 1 0 0 1 1.4 0Z" clip-rule="evenodd" /></svg>
+              </span>
+              <span class="text-slate-200">{f}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-xs" aria-hidden="true">
+        <div class="absolute -inset-x-6 -inset-y-10 rounded-[3rem] bg-brand/10 blur-3xl"></div>
+
+        <div class="relative rotate-2 rounded-[2.5rem] border-8 border-white/10 bg-white shadow-2xl shadow-black/40">
+          <div class="absolute left-1/2 top-0 h-5 w-28 -translate-x-1/2 rounded-b-2xl bg-white/10"></div>
+
+          <div class="rounded-[2rem] p-4 pt-8 text-ink">
+            <div class="flex items-center justify-between">
+              <span class="display text-sm font-semibold">HaulQ Driver</span>
+              <span class="h-2 w-2 rounded-full bg-brand"></span>
+            </div>
+
+            <div class="mt-4 rounded-2xl border border-line bg-wash p-4">
+              <p class="text-xs font-semibold uppercase tracking-widest text-brand">Load 214</p>
+              <p class="mt-1 text-sm font-semibold">Wichita, KS &rarr; Denver, CO</p>
+              <p class="mt-1 text-xs text-mute">522 mi &middot; arrives 3:40 PM</p>
+              <button class="mt-4 w-full rounded-full bg-brand py-2 text-xs font-semibold text-white">
+                Mark arrived
+              </button>
+            </div>
+
+            <div class="mt-3 flex items-center gap-3 rounded-2xl border border-line p-3">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand">
+                <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M4 5a2 2 0 0 1 2-2h1.5l1-1.5h3l1 1.5H14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5Zm6 2.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+              </span>
+              <div>
+                <p class="text-xs font-semibold">Scan the rate con</p>
+                <p class="text-[11px] text-mute">Reads it before you're back on the road</p>
+              </div>
+            </div>
+
+            <div class="mt-3 flex items-center justify-around border-t border-line pt-3 text-mute">
+              <span class="text-[11px] font-medium text-brand">Loads</span>
+              <span class="text-[11px]">Track</span>
+              <span class="text-[11px]">Docs</span>
+            </div>
+          </div>
+        </div>
+
+        <span class="absolute -left-8 top-10 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-ink shadow-lg">
+          Live ETA
+        </span>
+        <span class="absolute -right-6 bottom-16 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-ink shadow-lg">
+          Auto check-in
+        </span>
+      </div>
+    </div>
+
+    <div class="mt-20 border-t border-white/10 pt-14">
+      <h3 class="text-xs font-semibold uppercase tracking-widest text-brand">The rest of the roadmap</h3>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {PRODUCTS.map((p) => (
+          <a href={`/products/${p.slug}`}
+             class="group flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 transition hover:border-brand/50 hover:bg-white/10">
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-semibold text-brand">
+              {p.short}
+            </span>
+            <span class="min-w-0">
+              <span class="flex flex-wrap items-center gap-2">
+                <span class="text-sm font-semibold text-white">{p.name}</span>
+                <span class:list={["inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold", DARK_TONE[p.status]]}>
+                  {p.status}
+                </span>
+              </span>
+              <span class="mt-1 block text-xs text-slate-300">{p.tagline}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-14 rounded-2xl border border-white/10 bg-white/5 p-8 sm:p-10">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <h3 class="text-xl font-semibold">Want to know the moment any of this ships?</h3>
+          <p class="mt-2 max-w-md text-sm text-slate-300">
+            One email, whenever something on this page goes live. No spam in between.
+          </p>
+        </div>
+        <form id="roadmap-waitlist-form" class="flex w-full max-w-md flex-col gap-3 sm:w-auto sm:flex-row" novalidate
+          data-consent-version={WAITLIST_CONSENT_VERSION}>
+          <label class="flex-1">
+            <span class="sr-only">Email</span>
+            <input required type="email" name="email" autocomplete="email" placeholder="you@yourcarrier.com"
+              class="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white placeholder:text-mute focus:border-brand focus:ring-0 sm:w-64" />
+          </label>
+          <input type="text" name="company_website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+          <button type="submit"
+            class="shrink-0 rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition hover:bg-brand-600 disabled:opacity-60">
+            Notify me
+          </button>
+        </form>
+      </div>
+      <p id="roadmap-waitlist-msg" class="mt-3 hidden text-sm" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('roadmap-waitlist-form') as HTMLFormElement | null;
+  const msg = document.getElementById('roadmap-waitlist-msg') as HTMLElement | null;
+  if (form && msg) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+      const data = new FormData(form);
+      const payload = {
+        email: String(data.get('email') || '').trim(),
+        sourcePath: location.pathname + '#coming-soon',
+        consentVersion: form.dataset.consentVersion || '',
+        company_website: String(data.get('company_website') || ''),
+      };
+      msg.classList.remove('hidden');
+      msg.className = 'mt-3 text-sm text-slate-300';
+      if (!payload.email || !payload.email.includes('@')) {
+        msg.textContent = 'Please enter a valid email address.';
+        msg.className = 'mt-3 text-sm text-brand';
+        return;
+      }
+      btn.disabled = true;
+      msg.textContent = 'Sending...';
+      try {
+        const res = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        msg.textContent = "You're on the list. We'll email you as things ship.";
+        msg.className = 'mt-3 text-sm text-slate-300';
+      } catch {
+        msg.textContent = 'That did not go through. Please try again in a moment.';
+        msg.className = 'mt-3 text-sm text-brand';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+</script>

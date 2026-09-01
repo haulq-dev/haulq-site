@@ -15,11 +15,14 @@
  * Bindings (optional but recommended):
  *   WAITLIST        KV namespace. Persists every signup so none are lost
  *                   before email is configured.
+ *   CONTACT         R2 bucket. Persists every footer contact-form submission
+ *                   as one JSON object per message.
  */
 
 interface Env {
   ASSETS: { fetch: (req: Request) => Promise<Response> };
   WAITLIST?: KVNamespace;
+  CONTACT?: R2Bucket;
   FMCSA_WEBKEY?: string;
   POSTMARK_TOKEN?: string;
   NOTIFY_EMAIL?: string;
@@ -31,6 +34,10 @@ interface KVNamespace {
   put(key: string, value: string): Promise<void>;
   list(opts?: { prefix?: string; limit?: number }): Promise<{ keys: { name: string }[] }>;
   get(key: string): Promise<string | null>;
+}
+
+interface R2Bucket {
+  put(key: string, value: string): Promise<unknown>;
 }
 
 const json = (body: unknown, status = 200, cache = false) =>
@@ -193,6 +200,74 @@ async function handleWaitlist(request: Request, env: Env): Promise<Response> {
   return json({ ok: true });
 }
 
+/* ----------------------------------------------------------------- contact */
+
+interface ContactSubmission {
+  name?: string;
+  email?: string;
+  message?: string;
+  company_website?: string;
+}
+
+async function handleContact(request: Request, env: Env): Promise<Response> {
+  let body: ContactSubmission;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ ok: false, error: 'Invalid JSON' }, 400);
+  }
+
+  if (body.company_website) return json({ ok: true });
+
+  const email = (body.email ?? '').trim().toLowerCase();
+  const message = (body.message ?? '').trim();
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    return json({ ok: false, error: 'Invalid email' }, 400);
+  }
+  if (!message) {
+    return json({ ok: false, error: 'Message required' }, 400);
+  }
+
+  const record = {
+    name: (body.name ?? '').trim().slice(0, 200) || null,
+    email,
+    message: message.slice(0, 5000),
+    receivedAt: new Date().toISOString(),
+    country: request.headers.get('cf-ipcountry') ?? null,
+  };
+
+  // Persist first. Everything below is best-effort and must not lose a message.
+  if (env.CONTACT) {
+    try {
+      await env.CONTACT.put(`contact/${record.receivedAt}-${email}.json`, JSON.stringify(record));
+    } catch (e) {
+      console.error('R2 write failed', e);
+    }
+  }
+
+  console.log('contact submission', JSON.stringify(record));
+
+  if (env.POSTMARK_TOKEN && env.FROM_EMAIL && env.NOTIFY_EMAIL) {
+    try {
+      await sendMail(env, {
+        To: env.NOTIFY_EMAIL,
+        ReplyTo: record.email,
+        Subject: `HaulQ contact form: ${record.name ?? record.email}`,
+        TextBody: [
+          `Name: ${record.name ?? '-'}`,
+          `Email: ${record.email}`,
+          `Country: ${record.country ?? '-'}`,
+          `Received: ${record.receivedAt}`,
+          '',
+          record.message,
+        ].join('\n'),
+      });
+    } catch { /* non-fatal, already persisted above */ }
+  }
+
+  return json({ ok: true });
+}
+
 const PRODUCT_LABELS: Record<string, string> = {
   docs: 'HaulQ Docs',
   pay: 'HaulQ Pay',
@@ -201,6 +276,7 @@ const PRODUCT_LABELS: Record<string, string> = {
   track: 'HaulQ Track',
   routes: 'HaulQ Routes',
   dispatch: 'HaulQ Dispatch',
+  driver: 'HaulQ Driver App',
 };
 
 function confirmationBody(record: { interest: string[] }): string {
@@ -271,6 +347,11 @@ export default {
     if (url.pathname === '/api/waitlist') {
       if (request.method !== 'POST') return json({ ok: false, error: 'Use POST' }, 405);
       return handleWaitlist(request, env);
+    }
+
+    if (url.pathname === '/api/contact') {
+      if (request.method !== 'POST') return json({ ok: false, error: 'Use POST' }, 405);
+      return handleContact(request, env);
     }
 
     if (url.pathname === '/api/verify') {
