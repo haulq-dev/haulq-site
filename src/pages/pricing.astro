@@ -1,6 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
 import WaitlistForm from '../components/WaitlistForm.astro';
+import { PRODUCTS } from '../consts';
+
+// Monthly price per product. `null` means not sold on its own yet.
+const PRICES: Record<string, number | null> = {
+  docs: 19,
+  pay: 19,
+  insights: 29,
+  verify: 15,
+  track: 29,
+  routes: 39,
+  dispatch: null,
+};
+
+const priced = PRODUCTS.filter((p) => PRICES[p.slug] !== null);
+const comingSoon = PRODUCTS.filter((p) => PRICES[p.slug] === null);
 ---
 <Base title="Pricing" description="Software pricing, not a percentage of your gross.">
   <section class="relative overflow-hidden bg-ink text-white">
@@ -8,7 +23,8 @@ import WaitlistForm from '../components/WaitlistForm.astro';
     <div class="relative mx-auto max-w-4xl px-5 py-20">
       <h1 class="text-4xl font-semibold sm:text-5xl">Pricing</h1>
       <p class="mt-5 max-w-2xl text-lg text-slate-300">
-        Not finalised, and we would rather say that than invent a number. Two things are decided.
+        Pick the products you need, or get everything on one plan. No demo required to see what
+        it costs.
       </p>
     </div>
   </section>
@@ -17,26 +33,61 @@ import WaitlistForm from '../components/WaitlistForm.astro';
     <div class="grid gap-5 sm:grid-cols-2">
       <div class="rounded-2xl border border-line p-7">
         <h2 class="display text-xl font-semibold">HaulQ Carrier</h2>
-        <p class="mt-1 text-sm font-medium text-brand-600">One truck, or a very small operation</p>
-        <p class="mt-4 text-slate">Driver-first, self-dispatch, one authority, simple permissions. Flat monthly.</p>
+        <p class="mt-1 text-sm font-medium text-brand-600">Pick the products you need</p>
+        <p class="mt-4 text-slate">
+          One truck, or a very small operation. Turn on only what you need, and pay for exactly
+          that.
+        </p>
+
+        <ul class="mt-6 space-y-3 border-t border-line pt-5">
+          {priced.map((p) => (
+            <li class="flex items-center justify-between gap-3">
+              <span class="text-sm text-ink">{p.name}</span>
+              <span class="num text-sm font-semibold text-ink">${PRICES[p.slug]}/mo</span>
+            </li>
+          ))}
+          {comingSoon.map((p) => (
+            <li class="flex items-center justify-between gap-3">
+              <span class="text-sm text-mute">{p.name}</span>
+              <span class="rounded-full bg-wash px-2 py-0.5 text-[11px] font-semibold text-mute ring-1 ring-line">
+                Coming soon
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
+
       <div class="relative rounded-2xl border-2 border-brand bg-brand-50 p-7">
         <span class="absolute -top-3 left-7 rounded-full bg-brand px-3 py-1 text-xs font-semibold text-white">Grows with you</span>
         <h2 class="display text-xl font-semibold">HaulQ Fleet</h2>
-        <p class="mt-1 text-sm font-medium text-brand-600">Multi-truck</p>
-        <p class="mt-4 text-slate">Dispatch board, roles, bulk planning, driver settlements, consolidated reporting. Priced per truck.</p>
+        <p class="mt-1 text-sm font-medium text-brand-600">Every product, one platform</p>
+        <p class="mt-4 text-slate">
+          Multi-truck. Dispatch board, roles, bulk planning, driver settlements and consolidated
+          reporting across every truck.
+        </p>
+
+        <p class="mt-6 border-t border-brand-100 pt-5">
+          <span class="num text-3xl font-semibold text-ink">$199</span>
+          <span class="text-slate">/month</span>
+          <span class="block text-sm text-slate">plus $49 per truck</span>
+        </p>
+        <p class="mt-3 text-sm text-slate">
+          Docs, Pay, Insights, Verify, Track and Routes, included today. Whatever we add next
+          joins the platform at no extra cost.
+        </p>
       </div>
     </div>
 
     <div class="mt-10 space-y-5 rounded-2xl bg-ink p-8 text-white">
       <p class="text-slate-300"><strong class="font-semibold text-white">No percentage of gross.</strong> A dispatcher taking 7 percent from a truck grossing $200,000 costs about <span class="font-semibold text-brand">$14,000 a year</span>. Software should not be priced that way.</p>
-      <p class="text-slate-300"><strong class="font-semibold text-white">Buy the modules you want.</strong> Docs on its own, or the whole loop. Adding one later never means setting anything up again.</p>
+      <p class="text-slate-300"><strong class="font-semibold text-white">Buy the modules you want.</strong> Docs on its own, or everything at once. Adding one later never means setting anything up again.</p>
       <p class="text-slate-300"><strong class="font-semibold text-white">The MC lookup stays free.</strong> No account, no card, no trial clock.</p>
     </div>
 
     <div class="mt-14 rounded-2xl border border-line bg-wash p-6 sm:p-8">
-      <h2 class="text-2xl font-semibold">Get pricing when it lands</h2>
-      <div class="mt-6"><WaitlistForm compact /></div>
+      <h2 class="text-2xl font-semibold">Tell us what you run</h2>
+      <p class="mt-2 text-slate">We'll follow up with the right plan for your setup.</p>
+      <div class="mt-6"><WaitlistForm /></div>
     </div>
   </section>
 </Base>
