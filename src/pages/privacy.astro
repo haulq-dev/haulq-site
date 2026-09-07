@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE, WAITLIST_CONSENT_VERSION } from '../consts';
-const updated = 'August 2026';
+const updated = 'September 2026';
 ---
 <Base title="Privacy" description="What HaulQ collects, why, and how to have it removed.">
   <section class="relative overflow-hidden bg-ink text-white">
@@ -9,8 +9,10 @@ const updated = 'August 2026';
     <div class="relative mx-auto max-w-3xl px-5 py-20">
       <h1 class="text-4xl font-semibold sm:text-5xl">Privacy</h1>
       <p class="mt-5 text-lg text-slate-300">
-        Short version: the only thing this site collects is what you type into the waitlist form,
-        and we use it to email you about HaulQ. Nothing is sold, rented or shared with advertisers.
+        Short version: this covers two different things. On the website, the only thing we collect
+        is what you type into the waitlist form. In the HaulQ Driver app, we share a truck's
+        location and check-in times with the carrier that dispatched the load — that's the whole
+        job the app does. Nothing on either is sold, rented or shared with advertisers.
       </p>
       <p class="mt-3 text-sm text-mute">Last updated {updated}</p>
     </div>
@@ -18,7 +20,7 @@ const updated = 'August 2026';
 
   <section class="mx-auto max-w-3xl space-y-10 px-5 py-16">
     <div>
-      <h2 class="text-2xl font-semibold">What we collect</h2>
+      <h2 class="text-2xl font-semibold">What the website collects</h2>
       <p class="mt-3 text-slate">
         When you join the waitlist we store the email address you give us, and the optional details you
         choose to add: an MC or DOT number, your fleet size, your equipment type, and which products you
@@ -35,6 +37,45 @@ const updated = 'August 2026';
     </div>
 
     <div>
+      <h2 class="text-2xl font-semibold">What the HaulQ Driver app collects</h2>
+      <p class="mt-3 text-slate">
+        HaulQ Driver is the app truck drivers use to check in at a stop — reporting arrival, loading and
+        departure — without a phone call. While a load assigned to you is in transit, the app shares the
+        truck's position with the carrier that dispatched it, and with a broker's tracking link if the
+        carrier chooses to make one for that specific load. That only happens while the app is open and a
+        load is actively in transit — HaulQ Driver does not track your location in the background, or
+        outside of an active load.
+      </p>
+      <p class="mt-3 text-slate">
+        Each check-in you report — arrival, loading start, loading end, departure, and the timestamp it
+        happened — is recorded against that load. If your carrier has connected an ELD (electronic logging
+        device) integration, position data can also arrive that way instead of, or alongside, the app.
+      </p>
+      <p class="mt-3 text-slate">
+        We don't ask for a name, email or account to use HaulQ Driver. You're identified by the check-in
+        code your dispatcher gives you, which they may optionally link to a driver record they maintain —
+        that record, and anything in it, is entered and controlled by your carrier, not collected through
+        this app.
+      </p>
+      <p class="mt-3 text-slate">
+        The carrier that dispatched your load always sees your check-in times and position. If they
+        generate a tracking link for a broker on that load, the broker sees the load's status, a
+        city/state-level position and freshness — not an exact coordinate — and the same check-in
+        timestamps, and nothing else about you. HERE Technologies processes stop coordinates on the
+        carrier's behalf to calculate routes and estimated arrival times, and Render hosts the servers and
+        database the app and its data live on.
+      </p>
+      <p class="mt-3 text-slate">
+        Check-in and position records become part of that load's permanent record once written, the same
+        way the rest of a load's history is kept — they are not deleted on a timer. If you want a copy of
+        what's on file for you, or have a question about a specific carrier's records, start with that
+        carrier; we act on their behalf for this data, not as a separate service you have an account with.
+        You can also reach us directly at
+        <a class="font-medium text-brand underline underline-offset-2" href="mailto:privacy@haulq.ai">privacy@haulq.ai</a>.
+      </p>
+    </div>
+
+    <div>
       <h2 class="text-2xl font-semibold">What we do with it</h2>
       <p class="mt-3 text-slate">
         We email you about {SITE.name}: a confirmation when you sign up, then a message as each product goes
@@ -44,13 +85,14 @@ const updated = 'August 2026';
     </div>
 
     <div>
-      <h2 class="text-2xl font-semibold">Who else sees it</h2>
+      <h2 class="text-2xl font-semibold">Who else sees the website's data</h2>
       <p class="mt-3 text-slate">
         Two service providers, both acting on our behalf and neither permitted to use your data for their own
         purposes. <strong class="font-semibold text-ink">Cloudflare</strong> hosts this site and stores the
         waitlist, and keeps standard request logs. <strong class="font-semibold text-ink">Postmark</strong>
         delivers our email. We do not run advertising trackers, analytics scripts or third-party cookies on
-        this site.
+        this site. HaulQ Driver's own processors are listed in the section above, since they're different
+        from the website's.
       </p>
     </div>
 
