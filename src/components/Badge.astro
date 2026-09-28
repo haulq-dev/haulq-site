@@ -2,7 +2,8 @@
 interface Props { status: string; }
 const { status } = Astro.props;
 const tone: Record<string, string> = {
-  'Building now': 'bg-brand text-white',
+  'Live': 'bg-brand text-white',
+  'Early access': 'bg-brand-50 text-brand-600 ring-1 ring-brand-100',
   'Next up': 'bg-ink text-white',
   'Planned': 'bg-white text-slate ring-1 ring-line',
 };

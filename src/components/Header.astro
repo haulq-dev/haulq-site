@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { PRODUCTS } from '../consts';
+import { PRODUCTS, APP_URL } from '../consts';
 const path = Astro.url.pathname;
 const on = (p: string) => path.startsWith(p) ? 'text-ink' : 'text-slate';
 ---
@@ -22,14 +22,14 @@ const on = (p: string) => path.startsWith(p) ? 'text-ink' : 'text-slate';
           </a>
         ))}
         <div class="my-1 border-t border-line"></div>
-        <a href="/#coming-soon" class="flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-brand-50">
-          <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-slate-300"></span>
+        <a href="/#app" class="flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-brand-50">
+          <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand"></span>
           <span>
             <span class="flex items-center gap-2">
-              <span class="block text-sm font-semibold text-ink">HaulQ Driver App</span>
-              <span class="rounded-full bg-wash px-2 py-0.5 text-[10px] font-semibold text-slate ring-1 ring-line">Coming soon</span>
+              <span class="block text-sm font-semibold text-ink">HaulQ for iPhone</span>
+              <span class="rounded-full bg-brand px-2 py-0.5 text-[10px] font-semibold text-white">App Store</span>
             </span>
-            <span class="block text-xs text-mute">Everything a driver needs, in the cab.</span>
+            <span class="block text-xs text-mute">Check-ins and loads, in the cab.</span>
           </span>
         </a>
       </div>
@@ -39,9 +39,10 @@ const on = (p: string) => path.startsWith(p) ? 'text-ink' : 'text-slate';
     <a href="/pricing" class:list={["hidden md:block text-sm hover:text-ink", on('/pricing')]}>Pricing</a>
     <a href="/story" class:list={["hidden md:block text-sm hover:text-ink", on('/story')]}>Our story</a>
 
-    <a href="/waitlist"
-       class="ml-auto rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand/30 transition hover:bg-brand-600">
-      Join the waitlist
+    <a href={APP_URL} class="ml-auto hidden sm:block text-sm text-slate hover:text-ink">Sign in</a>
+    <a href={APP_URL}
+       class="ml-auto sm:ml-0 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand/30 transition hover:bg-brand-600">
+      Get started
     </a>
   </nav>
 </header>

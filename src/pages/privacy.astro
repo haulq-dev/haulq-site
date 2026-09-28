@@ -1,125 +1,237 @@
 ---
 import Base from '../layouts/Base.astro';
-import { SITE, WAITLIST_CONSENT_VERSION } from '../consts';
-const updated = 'September 2026';
+import { WAITLIST_CONSENT_VERSION } from '../consts';
+const updated = 'September 28, 2026';
+
+// Everyone who processes data for HaulQ. Keep this list in step with the
+// services haulq-app/apps/api/src/env.ts actually wires up.
+const PROCESSORS: Array<[string, string]> = [
+  ['Render', 'Hosts the HaulQ servers and database.'],
+  ['Cloudflare', 'Hosts this website, stores waitlist entries, and stores uploaded documents.'],
+  ['Clerk', 'Handles sign-in, passwords and account identity.'],
+  ['Stripe', 'Takes subscription payments. Card details go to Stripe, never to HaulQ.'],
+  ['Postmark', 'Sends HaulQ’s own email (invitations, alerts) and receives paperwork forwarded to your HaulQ address.'],
+  ['Unipile', 'Connects a carrier’s own Google or Microsoft mailbox, if they choose to.'],
+  ['Microsoft Azure', 'Reads text from scanned documents and photos.'],
+  ['Anthropic', 'Reads document text our own rules could not, to find fields like the rate or the stops.'],
+  ['HERE Technologies', 'Maps addresses, plans truck routes, turns positions into a city and state, and finds nearby truck stops.'],
+  ['Yelp', 'Finds repair shops near a location, when someone searches for one.'],
+  ['Motive', 'Supplies truck positions, only for carriers who connect their Motive account.'],
+  ['Apple', 'Distributes the iPhone app and delivers notifications, if you allow them.'],
+];
 ---
-<Base title="Privacy" description="What HaulQ collects, why, and how to have it removed.">
+<Base title="Privacy" description="What HaulQ collects, why, who processes it, and how to have it removed.">
   <section class="relative overflow-hidden bg-ink text-white">
     <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-3xl px-5 py-20">
       <h1 class="text-4xl font-semibold sm:text-5xl">Privacy</h1>
       <p class="mt-5 text-lg text-slate-300">
-        Short version: this covers two different things. On the website, the only thing we collect
-        is what you type into the waitlist form. In the HaulQ Driver app, we share a truck's
-        location and check-in times with the carrier that dispatched the load — that's the whole
-        job the app does. Nothing on either is sold, rented or shared with advertisers.
+        Short version: HaulQ holds what a carrier needs to run its loads. That means its trucks,
+        drivers, brokers, loads, paperwork and invoices, plus where a truck is while a load is
+        moving. We use it to run HaulQ for that carrier and for nothing else. We don’t sell it,
+        rent it, advertise with it, or let anyone train AI models on it.
       </p>
       <p class="mt-3 text-sm text-mute">Last updated {updated}</p>
     </div>
   </section>
 
-  <section class="mx-auto max-w-3xl space-y-10 px-5 py-16">
+  <section class="mx-auto max-w-3xl space-y-12 px-5 py-16">
     <div>
-      <h2 class="text-2xl font-semibold">What the website collects</h2>
+      <h2 class="text-2xl font-semibold">Who this covers</h2>
       <p class="mt-3 text-slate">
-        When you join the waitlist we store the email address you give us, and the optional details you
-        choose to add: an MC or DOT number, your fleet size, your equipment type, and which products you
-        said you were interested in. Alongside that we record the date and time you signed up, the page you
-        signed up from, the country your request came from, and a version tag for the consent wording that
-        was on screen at the time (currently <code class="rounded bg-wash px-1.5 py-0.5 text-sm">{WAITLIST_CONSENT_VERSION}</code>).
-        That last part exists so we can always tell you exactly what you agreed to.
+        It covers four groups: people who visit this website, carriers and their team members who use
+        HaulQ on the web at app.haulq.ai or in the HaulQ iPhone app, drivers invited by a carrier, and
+        brokers who open a tracking link a carrier sends them.
       </p>
       <p class="mt-3 text-slate">
-        The MC and DOT lookup runs against public FMCSA records. We do not require an account and we do not
-        attach lookups to you. The load profit calculator runs entirely in your browser; those numbers are
-        never sent anywhere.
-      </p>
-    </div>
-
-    <div>
-      <h2 class="text-2xl font-semibold">What the HaulQ Driver app collects</h2>
-      <p class="mt-3 text-slate">
-        HaulQ Driver is the app truck drivers use to check in at a stop — reporting arrival, loading and
-        departure — without a phone call. While a load assigned to you is in transit, the app shares the
-        truck's position with the carrier that dispatched it, and with a broker's tracking link if the
-        carrier chooses to make one for that specific load. That only happens while the app is open and a
-        load is actively in transit — HaulQ Driver does not track your location in the background, or
-        outside of an active load.
-      </p>
-      <p class="mt-3 text-slate">
-        Each check-in you report — arrival, loading start, loading end, departure, and the timestamp it
-        happened — is recorded against that load. If your carrier has connected an ELD (electronic logging
-        device) integration, position data can also arrive that way instead of, or alongside, the app.
-      </p>
-      <p class="mt-3 text-slate">
-        We don't ask for a name, email or account to use HaulQ Driver. You're identified by the check-in
-        code your dispatcher gives you, which they may optionally link to a driver record they maintain —
-        that record, and anything in it, is entered and controlled by your carrier, not collected through
-        this app.
-      </p>
-      <p class="mt-3 text-slate">
-        The carrier that dispatched your load always sees your check-in times and position. If they
-        generate a tracking link for a broker on that load, the broker sees the load's status, a
-        city/state-level position and freshness — not an exact coordinate — and the same check-in
-        timestamps, and nothing else about you. HERE Technologies processes stop coordinates on the
-        carrier's behalf to calculate routes and estimated arrival times, and Render hosts the servers and
-        database the app and its data live on.
-      </p>
-      <p class="mt-3 text-slate">
-        Check-in and position records become part of that load's permanent record once written, the same
-        way the rest of a load's history is kept — they are not deleted on a timer. If you want a copy of
-        what's on file for you, or have a question about a specific carrier's records, start with that
-        carrier; we act on their behalf for this data, not as a separate service you have an account with.
-        You can also reach us directly at
+        Most of what is in HaulQ is put there by a carrier about its own business: its drivers, the
+        brokers it hauls for, and its loads. For that information we act on the carrier’s behalf. If
+        you are a driver or a broker with a question about what a particular carrier holds on you,
+        start with that carrier. You can always reach us at
         <a class="font-medium text-brand underline underline-offset-2" href="mailto:privacy@haulq.ai">privacy@haulq.ai</a>.
       </p>
     </div>
 
     <div>
-      <h2 class="text-2xl font-semibold">What we do with it</h2>
+      <h2 class="text-2xl font-semibold">Your account</h2>
       <p class="mt-3 text-slate">
-        We email you about {SITE.name}: a confirmation when you sign up, then a message as each product goes
-        live. That is the whole purpose. If we ever want to send you something outside that scope, we will ask
-        first rather than assume the waitlist covers it.
+        To use HaulQ you sign in with an email address and a password, or with the sign-in option
+        shown on the screen. Clerk runs sign-in for us, so your password is never stored by HaulQ. We
+        keep your name, your email address, which carriers you belong to, and your role in each one
+        (owner, dispatcher, accountant or driver).
+      </p>
+      <p class="mt-3 text-slate">
+        Carriers pay for HaulQ on the web through Stripe. Stripe collects the card or bank details.
+        HaulQ keeps only the plan, the subscription status, and the reference Stripe gives us. The
+        iPhone app does not sell anything.
       </p>
     </div>
 
     <div>
-      <h2 class="text-2xl font-semibold">Who else sees the website's data</h2>
+      <h2 class="text-2xl font-semibold">What carriers put into HaulQ</h2>
       <p class="mt-3 text-slate">
-        Two service providers, both acting on our behalf and neither permitted to use your data for their own
-        purposes. <strong class="font-semibold text-ink">Cloudflare</strong> hosts this site and stores the
-        waitlist, and keeps standard request logs. <strong class="font-semibold text-ink">Postmark</strong>
-        delivers our email. We do not run advertising trackers, analytics scripts or third-party cookies on
-        this site. HaulQ Driver's own processors are listed in the section above, since they're different
-        from the website's.
+        A carrier’s identity (name, MC and DOT numbers, contact details), its trucks and their
+        dimensions, its operating costs, and the people on its team. It also holds the carrier’s drivers
+        and their credential expiry dates, its brokers and their contact details, and its loads with
+        their stops, rates and status. Invoices, payments and factoring records go in too, along with
+        any load history the carrier imports from a spreadsheet.
+      </p>
+      <p class="mt-3 text-slate">
+        HaulQ records who did what and when on each of these, so a carrier can always see how a
+        number came to be. That history is kept as a permanent record, which is why some of it is
+        retained after an account is deleted (see “Deleting your account” below).
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">Paperwork</h2>
+      <p class="mt-3 text-slate">
+        Documents reach HaulQ in three ways. Someone uploads them or photographs them in the app. Or
+        someone forwards them to the carrier’s HaulQ address. Or they arrive in a mailbox the carrier
+        has connected. We store the file, who it came from, and when.
+      </p>
+      <p class="mt-3 text-slate">
+        HaulQ reads each document to pull out details like the broker, the load number, the rate and
+        the stops. Most documents are read on our own servers. A scanned page or a photo is sent to
+        Microsoft Azure to read its text. When our own rules can’t find a detail, the document’s text
+        is sent to Anthropic’s AI model. Both do this for us under terms that don’t allow them to use
+        the content to train their models. Whatever a model finds is checked against the document’s own
+        text before HaulQ uses it.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">A connected mailbox</h2>
+      <p class="mt-3 text-slate">
+        A carrier can choose to connect its own Google or Microsoft mailbox through Unipile. You sign in
+        on Google’s or Microsoft’s own page, so HaulQ never sees the mailbox password. When a new email
+        arrives, HaulQ takes its attachments and the sender’s address and treats them as incoming
+        paperwork. We don’t store the rest of the message.
+      </p>
+      <p class="mt-3 text-slate">
+        If the carrier turns it on, HaulQ Autopilot can also send email from that mailbox, such as
+        payment reminders and invoices. Sending is off until the carrier switches it on, and it switches
+        off again whenever the mailbox is reconnected. The carrier chooses, for each kind of message,
+        whether HaulQ only shows a preview, asks first, or sends on its own. Every message HaulQ sends
+        or drafts is kept word for word, with a record of its attachments, so the carrier can see
+        exactly what went out. A carrier can disconnect the mailbox at any time.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">Location, camera and notifications in the iPhone app</h2>
+      <p class="mt-3 text-slate">
+        The app asks for your location only while you are using it, never in the background. It reads
+        your position at three moments. When you check in at a stop. When you choose to share your
+        position on a load. And when you search for repair shops near where you are. Check-ins and
+        shared positions are saved against that load. A repair-shop search sends the position to Yelp
+        for that search and is not saved by HaulQ.
+      </p>
+      <p class="mt-3 text-slate">
+        The carrier that assigned the load sees your check-in times and position. If the carrier
+        creates a tracking link for a broker, the broker sees the load’s status, the city and state the
+        truck was last in (not an exact point), how recent that is, and the check-in times. The broker
+        sees nothing else about you. If the carrier has connected Motive, truck positions can also come
+        from Motive instead of, or as well as, the app.
+      </p>
+      <p class="mt-3 text-slate">
+        The camera is used only when you tap to photograph paperwork. If you allow notifications, we
+        store your device’s notification token so Apple can deliver HaulQ’s alerts to you. You can turn
+        location, camera and notifications off at any time in your iPhone’s Settings.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">Broker checks</h2>
+      <p class="mt-3 text-slate">
+        HaulQ Verify and the free MC lookup on this site read public FMCSA records about a broker or
+        carrier: authority, insurance filings and operating status. Each fact is stored with where it
+        came from and when.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">What this website collects</h2>
+      <p class="mt-3 text-slate">
+        When you join the list for product updates, we store the email address you give us. We also
+        store any optional details you add: an MC or DOT number, your fleet size, your equipment type,
+        and which products interest you. With that we record when you signed up, the page you signed up
+        from, the country your request came from, and a version tag for the consent wording that was on
+        screen at the time (currently <code class="rounded bg-wash px-1.5 py-0.5 text-sm">{WAITLIST_CONSENT_VERSION}</code>).
+        The tag lets us show you exactly what you agreed to. We use this to email you about HaulQ. If we
+        ever want to email you about anything else, we will ask first.
+      </p>
+      <p class="mt-3 text-slate">
+        The MC lookup needs no account, and we don’t link a lookup to you. The load profit calculator
+        runs entirely in your browser, so its numbers are never sent anywhere. The contact form stores
+        what you write so we can answer it.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">Who processes data for us</h2>
+      <p class="mt-3 text-slate">
+        Each of these companies acts for HaulQ and may only use the data to provide its service to us.
+      </p>
+      <dl class="mt-5 divide-y divide-line rounded-2xl border border-line">
+        {PROCESSORS.map(([name, role]) => (
+          <div class="grid gap-1 px-5 py-3.5 sm:grid-cols-[11rem_1fr] sm:gap-4">
+            <dt class="font-semibold text-ink">{name}</dt>
+            <dd class="text-sm text-slate">{role}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-4 text-slate">
+        There are no advertising trackers, analytics scripts or third-party cookies on this website or
+        in the app. Nothing is sold or shared with advertisers or data brokers.
       </p>
     </div>
 
     <div>
       <h2 class="text-2xl font-semibold">How long we keep it</h2>
       <p class="mt-3 text-slate">
-        Waitlist entries are kept until you ask us to remove them, or until we retire the waitlist, whichever
-        comes first. If you unsubscribe we keep a record of the unsubscribe itself, because that is what stops
-        us from emailing you again by mistake.
+        A carrier’s records, including check-ins, positions, documents and sent messages, are kept for as
+        long as the carrier uses HaulQ. They become part of each load’s history and are not deleted on a
+        timer. If a carrier leaves HaulQ, it can ask us to delete its data. We will, apart from anything
+        the law requires us to keep, such as payment records.
+      </p>
+      <p class="mt-3 text-slate">
+        Entries on the product-update list are kept until you ask us to remove them or until we retire
+        the list. If you unsubscribe, we keep a record of that, so we don’t email you again by mistake.
       </p>
     </div>
 
     <div>
-      <h2 class="text-2xl font-semibold">Getting out</h2>
+      <h2 class="text-2xl font-semibold">Deleting your account</h2>
       <p class="mt-3 text-slate">
-        Every marketing email we send has an unsubscribe link. You can also email
+        You can delete your HaulQ login from the account menu on the web, or from the iPhone app, which
+        opens the same page. This deletes your sign-in right away. Your name stays on the actions you
+        took, such as a check-in or an approved invoice. That keeps the carrier’s records accurate for
+        everyone else who relies on them. The carrier’s own business records are not deleted with your
+        login, because they belong to the carrier.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-2xl font-semibold">Your choices</h2>
+      <p class="mt-3 text-slate">
+        Email
         <a class="font-medium text-brand underline underline-offset-2" href="mailto:privacy@haulq.ai">privacy@haulq.ai</a>
-        and ask us to remove your entry, or to send you a copy of what we hold. We will do it, and we will not
-        make you explain why.
+        to ask what we hold about you, to get a copy of it, to correct it, or to have it removed. We will
+        do it, and we won’t ask you to explain why. If the information belongs to a carrier’s records,
+        we will work with that carrier to answer you. Every marketing email also has an unsubscribe link.
+      </p>
+      <p class="mt-3 text-slate">
+        HaulQ is a business tool for trucking companies and is not meant for children.
       </p>
     </div>
 
     <div>
       <h2 class="text-2xl font-semibold">Changes</h2>
       <p class="mt-3 text-slate">
-        If this policy changes in a way that affects what we do with your information, we will update the date
-        at the top and, for anything material, tell the people already on the list.
+        If this policy changes in a way that affects what we do with your information, we will update the
+        date at the top. If the change is material, we will also tell carriers using HaulQ and the people on
+        our list before it takes effect.
       </p>
     </div>
   </section>

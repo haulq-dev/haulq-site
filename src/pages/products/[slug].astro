@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Badge from '../../components/Badge.astro';
 import WaitlistForm from '../../components/WaitlistForm.astro';
-import { PRODUCTS, productBySlug } from '../../consts';
+import { PRODUCTS, productBySlug, APP_URL } from '../../consts';
 
 export function getStaticPaths() {
   return PRODUCTS.map((p) => ({ params: { slug: p.slug } }));
@@ -35,15 +35,39 @@ const related = product.worksWith.map(productBySlug);
       <p class="mt-2 text-slate">{product.buyer}</p>
     </div>
 
-    <h2 class="mt-14 text-2xl font-semibold sm:text-3xl">What it does</h2>
-    <ul class="mt-6 space-y-3.5">
-      {product.offer.map((item) => (
-        <li class="flex gap-3.5 text-slate">
-          <span aria-hidden="true" class="mt-2 h-2 w-2 shrink-0 rounded-full bg-brand"></span>
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
+    {product.offer.length > 0 && (
+      <>
+        <h2 class="mt-14 text-2xl font-semibold sm:text-3xl">What it does today</h2>
+        {product.plan && (
+          <p class="mt-2 text-sm text-mute">
+            Included in {product.plan === 'Core' ? 'HaulQ Core and HaulQ Fleet' : 'HaulQ Fleet'}.
+            <a href="/pricing" class="font-semibold text-brand hover:underline">See pricing</a>
+          </p>
+        )}
+        <ul class="mt-6 space-y-3.5">
+          {product.offer.map((item) => (
+            <li class="flex gap-3.5 text-slate">
+              <span aria-hidden="true" class="mt-2 h-2 w-2 shrink-0 rounded-full bg-brand"></span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    {product.next.length > 0 && (
+      <>
+        <h2 class="mt-14 text-2xl font-semibold sm:text-3xl">{product.offer.length > 0 ? 'Coming next' : 'What it will do'}</h2>
+        <ul class="mt-6 space-y-3.5">
+          {product.next.map((item) => (
+            <li class="flex gap-3.5 text-slate">
+              <span aria-hidden="true" class="mt-2 h-2 w-2 shrink-0 rounded-full ring-2 ring-inset ring-brand-100"></span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
 
     <div class="mt-14 rounded-2xl border border-brand-100 bg-brand-50 p-7">
       <h2 class="display text-lg font-semibold">On its own</h2>
@@ -63,9 +87,22 @@ const related = product.worksWith.map(productBySlug);
 
   <section class="border-t border-line bg-wash">
     <div class="mx-auto max-w-3xl px-5 py-16">
-      <h2 class="text-2xl font-semibold sm:text-3xl">Want this one?</h2>
-      <p class="mt-2 text-slate">Join the waitlist and we will tell you when it ships.</p>
-      <div class="mt-7 rounded-2xl border border-line bg-white p-6 sm:p-8"><WaitlistForm compact /></div>
+      {product.status === 'Live' ? (
+        <>
+          <h2 class="text-2xl font-semibold sm:text-3xl">Want this one?</h2>
+          <p class="mt-2 text-slate">{product.name} is live. Sign up and pick a plan in a few minutes.</p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href={APP_URL} class="rounded-full bg-brand px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition hover:bg-brand-600">Get started</a>
+            <a href="/pricing" class="rounded-full border border-line bg-white px-7 py-3.5 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand">See pricing</a>
+          </div>
+        </>
+      ) : (
+        <>
+          <h2 class="text-2xl font-semibold sm:text-3xl">Want this one?</h2>
+          <p class="mt-2 text-slate">Leave your email and we will tell you when it ships.</p>
+          <div class="mt-7 rounded-2xl border border-line bg-white p-6 sm:p-8"><WaitlistForm compact /></div>
+        </>
+      )}
     </div>
   </section>
 </Base>

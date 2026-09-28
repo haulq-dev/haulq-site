@@ -1,16 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
 import WaitlistForm from '../components/WaitlistForm.astro';
+import { APP_URL } from '../consts';
 ---
-<Base title="Join the waitlist" description="Early access to HaulQ. Tell us which products you would use.">
+<Base title="Product updates" description="Hear when Dispatch, Autopilot and the rest of HaulQ ship. Tell us what you run.">
   <section class="relative overflow-hidden bg-ink text-white">
     <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
     <div class="absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-brand/20 blur-3xl" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-3xl px-5 py-20">
-      <h1 class="text-4xl font-semibold sm:text-5xl">Join the waitlist</h1>
+      <h1 class="text-4xl font-semibold sm:text-5xl">Get product updates</h1>
       <p class="mt-5 text-lg text-slate-300">
-        Documents to cash ships first, and the rest follows. Tell us what you run and we will let you
-        know as each product goes live.
+        Docs, Pay, Insights, Verify, Track and Routes are live now, and you can
+        <a href={APP_URL} class="font-semibold text-brand hover:underline">start today</a>. Dispatch and
+        the rest of Autopilot are still coming. Tell us what you run and we will let you know as they ship.
       </p>
     </div>
   </section>

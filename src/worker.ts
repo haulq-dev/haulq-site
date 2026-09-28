@@ -276,7 +276,7 @@ const PRODUCT_LABELS: Record<string, string> = {
   track: 'HaulQ Track',
   routes: 'HaulQ Routes',
   dispatch: 'HaulQ Dispatch',
-  driver: 'HaulQ Driver App',
+  driver: 'HaulQ iPhone app',
 };
 
 function confirmationBody(record: { interest: string[] }): string {
@@ -287,8 +287,9 @@ function confirmationBody(record: { interest: string[] }): string {
   const lines = [
     'Thanks for signing up.',
     '',
-    'You are on the HaulQ waitlist. We will email you as each product goes live,',
-    'starting with HaulQ Docs and HaulQ Pay.',
+    'You are on the HaulQ list. Docs, Pay, Insights, Verify, Track and Routes are',
+    'live now at https://app.haulq.ai, and we will email you as Dispatch and the',
+    'rest of HaulQ go live.',
   ];
 
   if (picked.length) {

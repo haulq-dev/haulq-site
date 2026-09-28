@@ -1,43 +1,42 @@
 ---
-import { PRODUCTS, WAITLIST_CONSENT_VERSION } from '../consts';
-
-const FEATURES = [
-  "See today's load the moment it's assigned. No more phone tag with dispatch.",
-  'One tap to check in at every stop — pickup, loading, delivery, done.',
-  'Snap the paperwork with your camera. HaulQ Docs reads it before you’re back on the road.',
-  'Live ETA and detention tracking run in the background, automatically.',
-];
+import { PRODUCTS, AUTOPILOT, MOBILE_APP, APP_STORE_URL, WAITLIST_CONSENT_VERSION } from '../consts';
 
 // Tuned for legibility on the dark section — Badge.astro's tones assume a
 // white card background, which is where every other use of it lives.
 const DARK_TONE: Record<string, string> = {
-  'Building now': 'bg-brand text-white',
+  'Live': 'bg-brand text-white',
+  'Early access': 'bg-brand/20 text-brand ring-1 ring-brand/40',
   'Next up': 'bg-white/15 text-white ring-1 ring-white/30',
   'Planned': 'bg-white/10 text-slate-300 ring-1 ring-white/15',
 };
+
+const roadmap = [
+  ...PRODUCTS.map((p) => ({ href: `/products/${p.slug}`, short: p.short, name: p.name, status: p.status, tagline: p.tagline })),
+  { href: '/pricing', short: 'Auto', name: AUTOPILOT.name, status: AUTOPILOT.status, tagline: AUTOPILOT.tagline },
+];
 ---
-<section id="coming-soon" class="relative overflow-hidden bg-ink-900 text-white">
+<section id="app" class="relative overflow-hidden bg-ink-900 text-white">
+  <span id="coming-soon" aria-hidden="true"></span>
   <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
   <div class="relative mx-auto max-w-6xl px-5 py-20">
-    <span class="inline-flex items-center rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate ring-1 ring-white/20">
-      Coming soon
+    <span class="inline-flex items-center rounded-full bg-brand px-3 py-1 text-xs font-semibold text-white">
+      On the App Store
     </span>
-    <h2 class="mt-5 max-w-2xl text-3xl font-semibold sm:text-4xl">Everything still coming to HaulQ</h2>
+    <h2 class="mt-5 max-w-2xl text-3xl font-semibold sm:text-4xl">HaulQ in the cab</h2>
     <p class="mt-4 max-w-2xl text-lg text-slate-300">
-      The product ladder above is only part of it. Here's the cab-side app we're building next,
-      and where the rest of the roadmap stands.
+      The HaulQ app for iPhone is live. Drivers sign in with the invitation their carrier sends,
+      and the office sees every check-in the moment it happens.
     </p>
 
     <div class="mt-14 grid items-center gap-14 lg:grid-cols-2">
       <div>
-        <h3 class="display text-2xl font-semibold">HaulQ Driver App</h3>
+        <h3 class="display text-2xl font-semibold">{MOBILE_APP.name}</h3>
         <p class="mt-3 max-w-md text-slate-300">
-          The cab-side half of HaulQ. Everything a driver needs to run a load, and nothing they
-          have to type twice.
+          Everything a driver needs to run a load, and nothing they have to type twice.
         </p>
 
         <ul class="mt-7 space-y-4">
-          {FEATURES.map((f) => (
+          {MOBILE_APP.features.map((f) => (
             <li class="flex items-start gap-3">
               <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-brand">
                 <svg viewBox="0 0 20 20" fill="currentColor" class="h-3 w-3"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0l-3.5-3.5a1 1 0 1 1 1.4-1.4l2.8 2.8 6.8-6.8a1 1 0 0 1 1.4 0Z" clip-rule="evenodd" /></svg>
@@ -46,6 +45,28 @@ const DARK_TONE: Record<string, string> = {
             </li>
           ))}
         </ul>
+
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href={APP_STORE_URL}
+             class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink transition hover:bg-brand-50">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M16.37 12.7c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.19-1.72-1.36-.14-2.65.8-3.34.8-.69 0-1.75-.78-2.88-.76-1.48.02-2.85.86-3.61 2.19-1.54 2.67-.39 6.62 1.1 8.79.73 1.06 1.6 2.25 2.74 2.2 1.1-.04 1.52-.71 2.85-.71 1.33 0 1.7.71 2.87.69 1.18-.02 1.93-1.08 2.65-2.14.84-1.23 1.18-2.42 1.2-2.48-.03-.01-2.3-.88-2.32-3.5ZM14.2 6.23c.6-.73 1.01-1.75.9-2.76-.87.03-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.21Z"/></svg>
+            Download on the App Store
+          </a>
+          <span class="text-sm text-mute">Free to download. Works with a HaulQ Core or Fleet plan.</span>
+        </div>
+
+        <div class="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6">
+          <h4 class="text-xs font-semibold uppercase tracking-widest text-brand">In the next update</h4>
+          <p class="mt-2 text-sm text-slate-300">The office side of HaulQ, on the phone:</p>
+          <ul class="mt-4 grid gap-2 text-sm text-slate-200 sm:grid-cols-2">
+            {MOBILE_APP.nextUpdate.map((f) => (
+              <li class="flex items-start gap-2">
+                <span aria-hidden="true" class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand"></span>
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <div class="relative mx-auto w-full max-w-xs" aria-hidden="true">
@@ -56,14 +77,14 @@ const DARK_TONE: Record<string, string> = {
 
           <div class="rounded-[2rem] p-4 pt-8 text-ink">
             <div class="flex items-center justify-between">
-              <span class="display text-sm font-semibold">HaulQ Driver</span>
+              <span class="display text-sm font-semibold">HaulQ</span>
               <span class="h-2 w-2 rounded-full bg-brand"></span>
             </div>
 
             <div class="mt-4 rounded-2xl border border-line bg-wash p-4">
               <p class="text-xs font-semibold uppercase tracking-widest text-brand">Load 214</p>
               <p class="mt-1 text-sm font-semibold">Wichita, KS &rarr; Denver, CO</p>
-              <p class="mt-1 text-xs text-mute">522 mi &middot; arrives 3:40 PM</p>
+              <p class="mt-1 text-xs text-mute">Stop 2 of 2 &middot; delivery</p>
               <button class="mt-4 w-full rounded-full bg-brand py-2 text-xs font-semibold text-white">
                 Mark arrived
               </button>
@@ -71,36 +92,35 @@ const DARK_TONE: Record<string, string> = {
 
             <div class="mt-3 flex items-center gap-3 rounded-2xl border border-line p-3">
               <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand">
-                <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M4 5a2 2 0 0 1 2-2h1.5l1-1.5h3l1 1.5H14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5Zm6 2.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+                <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-12.5a.75.75 0 0 0-1.5 0V10c0 .2.08.39.22.53l2.5 2.5a.75.75 0 1 0 1.06-1.06l-2.28-2.28V5.5Z" clip-rule="evenodd"/></svg>
               </span>
               <div>
-                <p class="text-xs font-semibold">Scan the rate con</p>
-                <p class="text-[11px] text-mute">Reads it before you're back on the road</p>
+                <p class="text-xs font-semibold">Arrived 1:12 PM</p>
+                <p class="text-[11px] text-mute">Detention clock running</p>
               </div>
             </div>
 
             <div class="mt-3 flex items-center justify-around border-t border-line pt-3 text-mute">
               <span class="text-[11px] font-medium text-brand">Loads</span>
-              <span class="text-[11px]">Track</span>
-              <span class="text-[11px]">Docs</span>
+              <span class="text-[11px]">Account</span>
             </div>
           </div>
         </div>
 
         <span class="absolute -left-8 top-10 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-ink shadow-lg">
-          Live ETA
+          One-tap check-in
         </span>
         <span class="absolute -right-6 bottom-16 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-ink shadow-lg">
-          Auto check-in
+          Detention on file
         </span>
       </div>
     </div>
 
     <div class="mt-20 border-t border-white/10 pt-14">
-      <h3 class="text-xs font-semibold uppercase tracking-widest text-brand">The rest of the roadmap</h3>
+      <h3 class="text-xs font-semibold uppercase tracking-widest text-brand">Where everything stands</h3>
       <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {PRODUCTS.map((p) => (
-          <a href={`/products/${p.slug}`}
+        {roadmap.map((p) => (
+          <a href={p.href}
              class="group flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 transition hover:border-brand/50 hover:bg-white/10">
             <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-semibold text-brand">
               {p.short}
@@ -122,9 +142,9 @@ const DARK_TONE: Record<string, string> = {
     <div class="mt-14 rounded-2xl border border-white/10 bg-white/5 p-8 sm:p-10">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <div>
-          <h3 class="text-xl font-semibold">Want to know the moment any of this ships?</h3>
+          <h3 class="text-xl font-semibold">Want to know when Dispatch ships?</h3>
           <p class="mt-2 max-w-md text-sm text-slate-300">
-            One email, whenever something on this page goes live. No spam in between.
+            One email whenever something new goes live. No spam in between.
           </p>
         </div>
         <form id="roadmap-waitlist-form" class="flex w-full max-w-md flex-col gap-3 sm:w-auto sm:flex-row" novalidate
@@ -156,7 +176,7 @@ const DARK_TONE: Record<string, string> = {
       const data = new FormData(form);
       const payload = {
         email: String(data.get('email') || '').trim(),
-        sourcePath: location.pathname + '#coming-soon',
+        sourcePath: location.pathname + '#app',
         consentVersion: form.dataset.consentVersion || '',
         company_website: String(data.get('company_website') || ''),
       };
