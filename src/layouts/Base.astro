@@ -33,6 +33,12 @@ const ogImage = new URL('/og.png', Astro.site).href;
     <meta property="og:image:alt" content={`${SITE.name}: ${SITE.promise}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
+    <!-- Cloudflare Web Analytics, installed here rather than by Cloudflare's
+         automatic setup: that injects into every hostname on the zone,
+         app.haulq.ai included, and the privacy policy says the app has no
+         analytics. Cookie-free; see the privacy page. `is:inline` keeps
+         Astro from bundling it. -->
+    <script is:inline type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "2e8b5cf80105430b98e02d2dab5321db"}'></script>
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />
