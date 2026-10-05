@@ -1,0 +1,66 @@
+---
+/**
+ * The Loads screen. Rate per total mile is the big number and per loaded mile
+ * sits beside it in grey, the same as the app — row 3 is there to show why.
+ */
+import AppFrame from './AppFrame.astro';
+
+const loads = [
+  { ref: 4418, from: 'Dallas, TX', to: 'Memphis, TN', status: ['In transit', 'brand'], rate: 1350, loaded: 452, deadhead: 38, truck: 'Truck 12' },
+  { ref: 4417, from: 'Fort Worth, TX', to: 'Oklahoma City, OK', status: ['Booked', 'neutral'], rate: 650, loaded: 205, deadhead: 22, truck: 'Truck 07' },
+  { ref: 4415, from: 'Houston, TX', to: 'San Antonio, TX', status: ['Booked', 'neutral'], rate: 900, loaded: 197, deadhead: 241, truck: 'Truck 03' },
+  { ref: 4412, from: 'Austin, TX', to: 'Little Rock, AR', status: ['Delivered', 'ok'], rate: 1250, loaded: 480, deadhead: 54, truck: 'Truck 12' },
+  { ref: 4409, from: 'Shreveport, LA', to: 'Dallas, TX', status: ['Invoiced', 'warn'], rate: 520, loaded: 189, deadhead: 15, truck: 'Truck 07' },
+] as const;
+
+const money = (n: number) => '$' + n.toLocaleString('en-US');
+const perMile = (rate: number, miles: number) => '$' + (rate / miles).toFixed(2);
+---
+<AppFrame path="/loads" active="Loads" label="The HaulQ Loads screen: five loads with lane, status, rate, and rate per total mile including deadhead shown as the headline number.">
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <div class="mk-display text-2xl">Loads</div>
+      <div class="mt-0.5 text-xs text-slate">Every load, and what it pays once the empty miles to reach it are counted.</div>
+    </div>
+    <span class="rounded-sm bg-ink px-3 py-1.5 text-xs font-semibold text-white">Add a load</span>
+  </div>
+
+  <div class="mt-4 flex flex-wrap gap-1.5">
+    {[['All', 24, true], ['Booked', 6], ['In transit', 4], ['Delivered', 9], ['Invoiced', 5]].map(([label, n, on]) => (
+      <span class:list={['mk-label border px-2 py-1.5', on ? 'border-ink bg-wash text-ink' : 'border-line text-mute']}>
+        {label} <span class="mk-num">{n}</span>
+      </span>
+    ))}
+  </div>
+
+  <table class="mk-table mt-4 text-xs sm:text-sm">
+    <thead>
+      <tr>
+        <th class="mk-label">Load</th>
+        <th class="mk-label">Lane</th>
+        <th class="mk-label hidden sm:table-cell">Status</th>
+        <th class="mk-label text-right">Rate</th>
+        <th class="mk-label text-right">Per total mile</th>
+        <th class="mk-label hidden md:table-cell">Truck</th>
+      </tr>
+    </thead>
+    <tbody>
+      {loads.map((l) => (
+        <tr class:list={[l.ref === 4415 && 'bg-brand-50']}>
+          <td class="mk-num font-semibold text-brand">{l.ref}</td>
+          <td>
+            <div class="font-medium">{l.from} → {l.to}</div>
+            <div class="mk-num text-[11px] text-mute">{l.loaded} loaded · {l.deadhead} empty</div>
+          </td>
+          <td class="hidden sm:table-cell"><span class={`mk-pill mk-pill-${l.status[1]}`}>{l.status[0]}</span></td>
+          <td class="mk-num text-right">{money(l.rate)}</td>
+          <td class="text-right">
+            <div class="mk-num font-semibold">{perMile(l.rate, l.loaded + l.deadhead)}</div>
+            <div class="mk-num text-[11px] text-mute">{perMile(l.rate, l.loaded)} loaded</div>
+          </td>
+          <td class="hidden text-slate md:table-cell">{l.truck}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</AppFrame>

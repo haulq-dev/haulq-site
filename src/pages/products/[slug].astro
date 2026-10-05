@@ -3,6 +3,12 @@ import Base from '../../layouts/Base.astro';
 import Badge from '../../components/Badge.astro';
 import WaitlistForm from '../../components/WaitlistForm.astro';
 import { PRODUCTS, productBySlug, APP_URL } from '../../consts';
+import DocsMock from '../../components/mockups/DocsMock.astro';
+import PayMock from '../../components/mockups/PayMock.astro';
+import InsightsMock from '../../components/mockups/InsightsMock.astro';
+import VerifyMock from '../../components/mockups/VerifyMock.astro';
+import TrackMock from '../../components/mockups/TrackMock.astro';
+import RoutesMock from '../../components/mockups/RoutesMock.astro';
 
 export function getStaticPaths() {
   return PRODUCTS.map((p) => ({ params: { slug: p.slug } }));
@@ -11,13 +17,24 @@ export function getStaticPaths() {
 const { slug } = Astro.params;
 const product = productBySlug(slug!);
 const related = product.worksWith.map(productBySlug);
+
+// Live products only: a picture of something unbuilt reads as a promise.
+const MOCKS: Record<string, typeof DocsMock> = {
+  docs: DocsMock,
+  pay: PayMock,
+  insights: InsightsMock,
+  verify: VerifyMock,
+  track: TrackMock,
+  routes: RoutesMock,
+};
+const Mock = product.status === 'Live' ? MOCKS[product.slug] : undefined;
 ---
 <Base title={product.name} description={product.job}>
   <!-- Product hero, dark -->
   <section class="relative overflow-hidden bg-ink text-white">
     <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
     <div class="absolute -right-20 top-0 h-72 w-72 rounded-full bg-brand/20 blur-3xl" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-4xl px-5 py-16">
+    <div class:list={['relative mx-auto max-w-4xl px-5 pt-16', Mock ? 'pb-36' : 'pb-16']}>
       <div class="flex items-center gap-3 text-sm">
         <a href="/products" class="text-mute hover:text-brand">Products</a>
         <span class="text-white/30">/</span>
@@ -28,6 +45,12 @@ const related = product.worksWith.map(productBySlug);
       <p class="mt-5 max-w-2xl text-slate-300">{product.job}</p>
     </div>
   </section>
+
+  {Mock && (
+    <div class="relative z-10 mx-auto -mt-24 max-w-3xl px-5">
+      <Mock />
+    </div>
+  )}
 
   <article class="mx-auto max-w-4xl px-5 py-16">
     <div class="rounded-2xl border border-line bg-wash p-6">

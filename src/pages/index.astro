@@ -5,13 +5,14 @@ import WaitlistForm from '../components/WaitlistForm.astro';
 import ComingSoonRoadmap from '../components/ComingSoonRoadmap.astro';
 import { PRODUCTS, SITE, AUTOPILOT, APP_URL, APP_STORE_URL } from '../consts';
 import Badge from '../components/Badge.astro';
+import LoadsMock from '../components/mockups/LoadsMock.astro';
 ---
 <Base description={SITE.category}>
   <!-- HERO, dark -->
   <section class="relative overflow-hidden bg-ink text-white">
     <div class="hq-stripes absolute inset-0" aria-hidden="true"></div>
     <div class="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-brand/20 blur-3xl" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-5 pb-24 pt-20 sm:pt-28">
+    <div class="relative mx-auto max-w-6xl px-5 pb-40 pt-20 sm:pb-48 sm:pt-28">
       <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand">{SITE.wedge}</p>
       <h1 class="mt-5 max-w-3xl text-5xl font-semibold leading-[1.03] sm:text-6xl">
         Run every load.<br /><span class="text-brand">Know every dollar.</span>
@@ -39,8 +40,13 @@ import Badge from '../components/Badge.astro';
     </div>
   </section>
 
+  <!-- The product, pulled up over the hero's bottom edge -->
+  <div class="relative z-10 mx-auto -mt-28 max-w-5xl px-5 sm:-mt-36">
+    <LoadsMock />
+  </div>
+
   <!-- STAT BAND, warm tint -->
-  <section class="border-b border-brand-100 bg-brand-50">
+  <section class="-mt-20 border-b border-brand-100 bg-brand-50 pt-20">
     <div class="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:grid-cols-3">
       {[
         ['0%', 'of your gross. Software pricing, not a slice of every load.'],

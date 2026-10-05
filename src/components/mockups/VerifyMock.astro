@@ -1,0 +1,38 @@
+---
+/** A broker on file: FMCSA facts with their source and time, and the paperwork-domain warning. */
+import AppFrame from './AppFrame.astro';
+
+const facts = [
+  ['Operating authority', 'Authorized for property · broker', 'ok'],
+  ['Insurance / bond', 'BMC-84 on file', 'ok'],
+  ['Last change', 'None in 90 days', 'neutral'],
+] as const;
+---
+<AppFrame path="/loads/4419" active="Loads" label="HaulQ Verify on a load: the broker's FMCSA operating authority and bond shown with their source and time fetched, and a warning that paperwork came from an email domain this broker has not used before.">
+  <div class="flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <div class="mk-label text-mute">Broker on load 4419</div>
+      <div class="mk-display mt-1 text-xl">Prairie Logistics Inc.</div>
+      <div class="mk-num mt-0.5 text-[11px] text-mute">MC 123456 · USDOT 1234567</div>
+    </div>
+    <span class="mk-pill mk-pill-ok">Authorized</span>
+  </div>
+
+  <dl class="mt-4 text-xs sm:text-sm">
+    {facts.map(([k, v, tone]) => (
+      <div class="flex items-center justify-between gap-3 border-t border-line py-2">
+        <dt class="mk-label text-mute">{k}</dt>
+        <dd class:list={['text-right font-medium', tone === 'ok' && 'text-[#157f4d]']}>{v}</dd>
+      </div>
+    ))}
+  </dl>
+  <div class="mk-num border-t border-line pt-2 text-[11px] text-mute">Source: FMCSA · fetched today 06:02 · re-checked every night</div>
+
+  <div class="mt-4 border-l-2 border-[#9a6700] bg-[#fff8e6] px-3 py-2.5 text-xs sm:text-sm">
+    <div class="font-semibold text-[#9a6700]">Paperwork from a new sender domain</div>
+    <div class="mt-1 text-slate">
+      The rate confirmation for this load came from <span class="mk-num">prairie-logistics.co</span>.
+      Every earlier document from this broker came from <span class="mk-num">prairielogistics.com</span>.
+    </div>
+  </div>
+</AppFrame>

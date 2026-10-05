@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { APP_URL } from '../../consts';
 ---
 <Base
   title="Free load profit calculator"
@@ -40,14 +41,17 @@ import Base from '../../layouts/Base.astro';
     <div id="out" class="mt-8 rounded-2xl border border-line bg-white p-7 shadow-lg shadow-ink/5"></div>
 
     <div class="mt-10 rounded-2xl border border-brand-100 bg-brand-50 p-7">
-      <p class="text-sm text-slate">
-        This uses figures you type in. HaulQ Insights builds the same number from your real fuel receipts,
-        tolls, maintenance reserve and settlements, and estimates fuel burn from the terrain on the actual
-        route before you accept the load.
+      <h2 class="display text-lg font-semibold">Get this number on every load, without the typing</h2>
+      <p class="mt-2 text-sm text-slate">
+        HaulQ Insights works it out for every load you run, from your own cost per mile, with
+        deadhead counted, and breaks it down by broker, lane and truck. Rate confirmations read
+        themselves into loads, so the inputs fill in on their own.
       </p>
-      <a href="/products/insights" class="mt-3 inline-block text-sm font-medium text-brand hover:underline">
-        See HaulQ Insights &rarr;
-      </a>
+      <div class="mt-5 flex flex-wrap items-center gap-3">
+        <a href={APP_URL} class="rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand/30 transition hover:bg-brand-600">Get started</a>
+        <a href="/products/insights" class="text-sm font-semibold text-brand hover:underline">See HaulQ Insights &rarr;</a>
+      </div>
+      <p class="mt-3 text-xs text-mute">From $49 a month on HaulQ Core. No cut of your gross.</p>
     </div>
   </section>
 </Base>

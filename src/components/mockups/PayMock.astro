@@ -1,0 +1,56 @@
+---
+/** Receivables aging across the top, invoices below: what's out, what's late, what's paid. */
+import AppFrame from './AppFrame.astro';
+
+const aging = [
+  ['Current', 18420, 'neutral'],
+  ['1–30 days', 6150, 'neutral'],
+  ['31–60 days', 2300, 'warn'],
+  ['61–90 days', 0, 'neutral'],
+  ['90+ days', 1100, 'bad'],
+] as const;
+const invoices = [
+  { ref: 1093, load: 4412, broker: 'Lakeshore Freight', amount: 1325, status: ['Sent', 'warn'], note: 'Due Oct 24' },
+  { ref: 1092, load: 4409, broker: 'Prairie Logistics', amount: 520, status: ['Draft', 'neutral'], note: 'Ready to send' },
+  { ref: 1091, load: 4404, broker: 'Gulfline Brokerage', amount: 2275, status: ['Paid', 'ok'], note: 'Paid Oct 2 · factor' },
+  { ref: 1088, load: 4398, broker: 'Redbud Transport Svcs', amount: 1100, status: ['Sent', 'bad'], note: '96 days out' },
+] as const;
+const money = (n: number) => '$' + n.toLocaleString('en-US');
+---
+<AppFrame path="/pay" active="Pay" label="HaulQ Pay: receivables aging buckets from current to over 90 days, and a list of invoices with their broker, amount and status.">
+  <div class="mk-display text-2xl">Pay</div>
+  <div class="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">
+    {aging.map(([label, amount, tone], i) => (
+      <div class:list={['border p-2.5', i === 4 && 'col-span-2 sm:col-span-1', tone === 'bad' ? 'border-[#b42318]/40 bg-[#fef3f2]' : 'border-line', tone === 'warn' && 'bg-[#fff8e6]']}>
+        <div class="mk-label text-mute">{label}</div>
+        <div class:list={['mk-num mt-1.5 text-base font-semibold', tone === 'bad' && 'text-[#b42318]']}>{money(amount)}</div>
+      </div>
+    ))}
+  </div>
+  <table class="mk-table mt-5 text-xs sm:text-sm">
+    <thead>
+      <tr>
+        <th class="mk-label">Invoice</th>
+        <th class="mk-label">Broker</th>
+        <th class="mk-label text-right">Amount</th>
+        <th class="mk-label">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {invoices.map((i) => (
+        <tr>
+          <td>
+            <div class="mk-num font-semibold text-brand">{i.ref}</div>
+            <div class="mk-num text-[11px] text-mute">load {i.load}</div>
+          </td>
+          <td class="font-medium">{i.broker}</td>
+          <td class="mk-num text-right">{money(i.amount)}</td>
+          <td>
+            <span class={`mk-pill mk-pill-${i.status[1]}`}>{i.status[0]}</span>
+            <div class="mt-1 text-[11px] text-mute">{i.note}</div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</AppFrame>

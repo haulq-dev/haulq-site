@@ -1,0 +1,58 @@
+---
+/**
+ * The page a broker opens from a tracking link. No account, so no app nav.
+ * Check-in times and a detention clock, not an ETA: live ETA is on Track's
+ * "Coming next" list in consts.ts, not built.
+ */
+import AppFrame from './AppFrame.astro';
+
+const stops = [
+  { kind: 'Pickup', place: 'Dallas, TX', lines: [['Arrived', 'Oct 7, 07:42'], ['Loading', 'Oct 7, 08:10'], ['Departed', 'Oct 7, 10:05']], done: true },
+  { kind: 'Delivery', place: 'Memphis, TN', lines: [['Appointment', 'Oct 8, 14:00']], done: false },
+];
+---
+<AppFrame path="/track/4418-k2f9" label="The tracking page a broker sees for a load: no sign-in needed, the truck's last reported position, and check-in times at pickup with detention time against the broker's free time.">
+  <div class="flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <div class="mk-label text-mute">Ridgeway Transport · for Lakeshore Freight</div>
+      <div class="mk-display mt-1 text-xl">Load 4418</div>
+    </div>
+    <span class="mk-pill mk-pill-brand">In transit</span>
+  </div>
+
+  <div class="mt-4 flex items-center gap-2 border border-line bg-wash px-3 py-2 text-xs sm:text-sm">
+    <span class="relative flex h-2 w-2">
+      <span class="absolute inline-flex h-full w-full rounded-full bg-brand opacity-60 motion-safe:animate-ping"></span>
+      <span class="relative inline-flex h-2 w-2 rounded-full bg-brand"></span>
+    </span>
+    Last position near Texarkana, AR <span class="mk-num ml-auto text-[11px] text-mute">12 min ago</span>
+  </div>
+
+  <ol class="mt-4 space-y-0">
+    {stops.map((s, i) => (
+      <li class="relative grid grid-cols-[1.25rem_1fr] gap-3 pb-4">
+        {i < stops.length - 1 && <span class="absolute left-[0.5rem] top-5 h-full w-px bg-line"></span>}
+        <span class:list={['mt-1 h-4 w-4 rounded-full border-2', s.done ? 'border-ink bg-ink' : 'border-mute bg-white']}></span>
+        <div class="text-xs sm:text-sm">
+          <div class="flex items-baseline gap-2">
+            <span class="mk-label text-mute">{s.kind}</span>
+            <span class="font-semibold">{s.place}</span>
+          </div>
+          <dl class="mt-1.5 grid grid-cols-[6rem_1fr] gap-y-1">
+            {s.lines.map(([k, v]) => (
+              <>
+                <dt class="text-slate">{k}</dt>
+                <dd class="mk-num">{v}</dd>
+              </>
+            ))}
+          </dl>
+          {s.done && (
+            <div class="mt-2 inline-block border-l-2 border-[#9a6700] bg-[#fff8e6] px-2 py-1 text-[11px] text-[#9a6700]">
+              Was in detention — 23 min over the 2 hr free time
+            </div>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+</AppFrame>

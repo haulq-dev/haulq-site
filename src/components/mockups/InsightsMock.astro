@@ -1,0 +1,44 @@
+---
+/** Margin after the carrier's own cost per mile, then the same thing by broker. */
+import AppFrame from './AppFrame.astro';
+
+const tiles = [
+  ['Revenue', '$48,260'],
+  ['Direct cost', '$36,910'],
+  ['Margin', '$11,350'],
+  ['Empty miles', '14%'],
+] as const;
+const brokers = [
+  { name: 'Lakeshore Freight', loads: 9, margin: 4820, pct: 29 },
+  { name: 'Prairie Logistics', loads: 7, margin: 3160, pct: 24 },
+  { name: 'Gulfline Brokerage', loads: 6, margin: 2470, pct: 19 },
+  { name: 'Redbud Transport Svcs', loads: 4, margin: 900, pct: 9 },
+];
+const max = Math.max(...brokers.map((b) => b.pct));
+---
+<AppFrame path="/insights" active="Insights" label="HaulQ Insights: revenue, direct cost, margin and share of empty miles over 30 days, and margin by broker as a bar chart.">
+  <div class="flex flex-wrap items-baseline justify-between gap-2">
+    <div class="mk-display text-2xl">Insights</div>
+    <span class="mk-label text-mute">Last 30 days · 26 loads</span>
+  </div>
+  <div class="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+    {tiles.map(([k, v], i) => (
+      <div class:list={['border p-2.5', i === 2 ? 'border-brand bg-brand-50' : 'border-line']}>
+        <div class="mk-label text-mute">{k}</div>
+        <div class:list={['mk-num mt-1.5 text-base font-semibold', i === 2 && 'text-brand-600']}>{v}</div>
+      </div>
+    ))}
+  </div>
+  <div class="mk-label mt-5 text-mute">Margin by broker</div>
+  <div class="mt-2 space-y-2.5 text-xs sm:text-sm">
+    {brokers.map((b) => (
+      <div class="grid grid-cols-[minmax(0,9rem)_1fr_auto] items-center gap-3">
+        <div class="truncate font-medium">{b.name} <span class="mk-num text-[11px] text-mute">· {b.loads}</span></div>
+        <div class="h-2.5 bg-wash">
+          <div class:list={['h-full', b.pct < 10 ? 'bg-[#9a6700]' : 'bg-ink']} style={`width:${(b.pct / max) * 100}%`}></div>
+        </div>
+        <div class="mk-num w-24 text-right">${b.margin.toLocaleString('en-US')} <span class="text-mute">{b.pct}%</span></div>
+      </div>
+    ))}
+  </div>
+</AppFrame>

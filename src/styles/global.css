@@ -65,3 +65,50 @@ h1, h2, h3, .display {
 
 /* Dark sections: keep links legible */
 .on-dark a:hover { color: var(--color-brand); }
+
+/* --- App mockups ----------------------------------------------------------
+   Stand-ins for screenshots (components/mockups/). They copy the app's own
+   idiom from haulq-app/apps/web/src/styles.css — square corners, hairline
+   rules, monospaced figures and small stamped labels — rather than the
+   site's rounded marketing look, so they read as the product. */
+.mk-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.625rem;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.mk-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums slashed-zero;
+  letter-spacing: -0.02em;
+}
+.mk-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+}
+.mk-pill {
+  display: inline-block;
+  border: 1px solid currentColor;
+  padding: 0.2rem 0.4rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.5625rem;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.mk-pill-ok { color: #157f4d; background: #eefaf3; }
+.mk-pill-warn { color: #9a6700; background: #fff8e6; }
+.mk-pill-bad { color: #b42318; background: #fef3f2; }
+.mk-pill-neutral { color: var(--color-slate); background: var(--color-wash); }
+.mk-pill-brand { color: var(--color-brand-600); background: var(--color-brand-50); }
+.mk-table { width: 100%; border-collapse: collapse; }
+.mk-table th, .mk-table td {
+  border-top: 1px solid var(--color-line);
+  padding: 0.55rem 0.75rem 0.55rem 0;
+  text-align: left;
+  vertical-align: top;
+}
+.mk-table thead th { border-top: 0; border-bottom: 2px solid var(--color-ink); padding-bottom: 0.4rem; }
+.mk-table td:last-child, .mk-table th:last-child { padding-right: 0; }
