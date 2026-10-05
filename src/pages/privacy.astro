@@ -1,13 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import { WAITLIST_CONSENT_VERSION } from '../consts';
-const updated = 'September 28, 2026';
+const updated = 'October 5, 2026';
 
 // Everyone who processes data for HaulQ. Keep this list in step with the
 // services haulq-app/apps/api/src/env.ts actually wires up.
 const PROCESSORS: Array<[string, string]> = [
   ['Render', 'Hosts the HaulQ servers and database.'],
-  ['Cloudflare', 'Hosts this website, stores waitlist entries, and stores uploaded documents.'],
+  ['Cloudflare', 'Hosts this website, counts visits to it, stores waitlist entries, and stores uploaded documents.'],
   ['Clerk', 'Handles sign-in, passwords and account identity.'],
   ['Stripe', 'Takes subscription payments. Card details go to Stripe, never to HaulQ.'],
   ['Postmark', 'Sends HaulQ’s own email (invitations, alerts) and receives paperwork forwarded to your HaulQ address.'],
@@ -166,6 +166,11 @@ const PROCESSORS: Array<[string, string]> = [
         runs entirely in your browser, so its numbers are never sent anywhere. The contact form stores
         what you write so we can answer it.
       </p>
+      <p class="mt-3 text-slate">
+        We count visits to this website with Cloudflare Web Analytics. It records the page viewed, the
+        site that linked you here, and your browser, device type and country. It sets no cookies and is
+        not used to identify you or follow you across other sites.
+      </p>
     </div>
 
     <div>
@@ -182,8 +187,8 @@ const PROCESSORS: Array<[string, string]> = [
         ))}
       </dl>
       <p class="mt-4 text-slate">
-        There are no advertising trackers, analytics scripts or third-party cookies on this website or
-        in the app. Nothing is sold or shared with advertisers or data brokers.
+        There are no advertising trackers or third-party cookies on this website or in the app, and the
+        app has no analytics. Nothing is sold or shared with advertisers or data brokers.
       </p>
     </div>
 
