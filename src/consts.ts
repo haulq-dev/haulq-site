@@ -134,7 +134,7 @@ export const PRODUCTS: Product[] = [
     slug: 'track',
     name: 'HaulQ Track',
     short: 'Track',
-    tagline: 'Nobody has to call the driver.',
+    tagline: 'Live location, stop check-ins and detention alerts.',
     status: 'Live',
     plan: 'Fleet',
     buyer: 'Carriers, fleet managers and the brokers they send a link to.',
